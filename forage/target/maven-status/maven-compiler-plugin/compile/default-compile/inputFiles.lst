@@ -1,3 +1,10 @@
-/home/estelle/S4/MrNaina/WebDyn/SpringMVC/forage/src/main/java/com/example/forage/config/AppInitializer.java
-/home/estelle/S4/MrNaina/WebDyn/SpringMVC/forage/src/main/java/com/example/forage/config/WebConfig.java
-/home/estelle/S4/MrNaina/WebDyn/SpringMVC/forage/src/main/java/com/example/forage/controller/HomeController.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/config/JpaConfig.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/controller/DemandeController.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/controller/HomeController.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/Demande.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/Status.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/StatusDemande.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/DemandeRepository.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/StatusDemandeRepository.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/StatusRepository.java
+/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/service/DemandeService.java

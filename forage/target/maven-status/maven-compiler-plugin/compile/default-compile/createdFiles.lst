@@ -1,3 +1,10 @@
-com/example/forage/config/AppInitializer.class
-com/example/forage/config/WebConfig.class
+com/example/forage/repository/StatusDemandeRepository.class
 com/example/forage/controller/HomeController.class
+com/example/forage/entity/Status.class
+com/example/forage/repository/StatusRepository.class
+com/example/forage/service/DemandeService.class
+com/example/forage/entity/StatusDemande.class
+com/example/forage/controller/DemandeController.class
+com/example/forage/config/JpaConfig.class
+com/example/forage/entity/Demande.class
+com/example/forage/repository/DemandeRepository.class
