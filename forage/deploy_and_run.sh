@@ -66,12 +66,30 @@ if [ -x "$TOMCAT_HOME/bin/startup.sh" ]; then
   "$TOMCAT_HOME/bin/startup.sh" || true
 fi
 
+# Attendre que Tomcat démarre
+echo "Attente du démarrage de Tomcat (10 secondes)..."
+sleep 10
+
 URL="http://localhost:8080/forage"
 echo "Application déployée — essayez: $URL"
 
+# Ouvrir le navigateur
+echo "Ouverture du navigateur..."
 if command -v xdg-open >/dev/null 2>&1; then
-  xdg-open "$URL" >/dev/null 2>&1 || true
+  xdg-open "$URL" >/dev/null 2>&1 &
+elif command -v firefox >/dev/null 2>&1; then
+  firefox "$URL" >/dev/null 2>&1 &
+elif command -v google-chrome >/dev/null 2>&1; then
+  google-chrome "$URL" >/dev/null 2>&1 &
+elif command -v chromium >/dev/null 2>&1; then
+  chromium "$URL" >/dev/null 2>&1 &
+else
+  echo "Aucun navigateur trouvé - veuillez ouvrir manuellement: $URL"
 fi
 
+echo ""
+echo "✓ Application lancée avec succès!"
+echo "✓ Navigateur ouvert: $URL"
+echo ""
 echo "Suivi des logs (ctrl+C pour quitter) : $TOMCAT_HOME/logs/catalina.out"
 exec tail -n 200 -f "$TOMCAT_HOME/logs/catalina.out"

@@ -1,8 +1,12 @@
 package com.example.forage.service;
 
+import com.example.forage.entity.Client;
+import com.example.forage.entity.Commune;
 import com.example.forage.entity.Demande;
 import com.example.forage.entity.Status;
 import com.example.forage.entity.StatusDemande;
+import com.example.forage.repository.ClientRepository;
+import com.example.forage.repository.CommuneRepository;
 import com.example.forage.repository.DemandeRepository;
 import com.example.forage.repository.StatusDemandeRepository;
 import com.example.forage.repository.StatusRepository;
@@ -17,12 +21,17 @@ import java.util.List;
 public class DemandeService {
 
     private final DemandeRepository repo;
+    private final ClientRepository clientRepo;
+    private final CommuneRepository communeRepo;
     private final StatusRepository statusRepo;
     private final StatusDemandeRepository statusDemandeRepo;
 
-    public DemandeService(DemandeRepository repo, StatusRepository statusRepo,
+    public DemandeService(DemandeRepository repo, ClientRepository clientRepo, CommuneRepository communeRepo,
+            StatusRepository statusRepo,
             StatusDemandeRepository statusDemandeRepo) {
         this.repo = repo;
+        this.clientRepo = clientRepo;
+        this.communeRepo = communeRepo;
         this.statusRepo = statusRepo;
         this.statusDemandeRepo = statusDemandeRepo;
     }
@@ -36,17 +45,37 @@ public class DemandeService {
     }
 
     @Transactional
-    public void creerDemande(Demande d, Long idStatus) {
+    public void creerDemande(Demande d, Long clientId, Long communeId, Long idStatus, String lieuForage) {
 
         if (d == null)
             return;
+
+        for (Demande demande : repo.findAll()) {
+            if (demande.getReference().equals(d.getReference())) {
+                throw new RuntimeException(" Cette reference existe deja . La reference doit etre unique");
+            }
+        }
+
+        if (clientId == null || communeId == null || lieuForage == null) {
+            throw new RuntimeException("Client, commune et lieu de forage sont obligatoires");
+        }
+
+        Client client = clientRepo.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        Commune commune = communeRepo.findById(communeId)
+                .orElseThrow(() -> new RuntimeException("Commune not found"));
 
         if (idStatus == null) {
             idStatus = 1L;
         }
 
         Status status = statusRepo.findById(idStatus).orElseThrow(() -> new RuntimeException("Status not found"));
-        
+
+        d.setClient(client);
+        d.setCommune(commune);
+        d.setStatusDemande(status.getLibele());
+        d.setLieuForage(lieuForage);
+
         repo.save(d);
 
         StatusDemande sm = new StatusDemande();

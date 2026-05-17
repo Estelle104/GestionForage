@@ -1,0 +1,2 @@
+
+TOMCAT_HOME=/opt/tomcat ./deploy_and_run.sh

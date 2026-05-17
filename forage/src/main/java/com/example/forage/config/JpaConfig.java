@@ -7,7 +7,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.*;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -79,8 +78,7 @@ public class JpaConfig {
     public JpaTransactionManager transactionManager(
             EntityManagerFactory emf) {
 
-        JpaTransactionManager transactionManager
-                = new JpaTransactionManager();
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
 
         transactionManager.setEntityManagerFactory(emf);
 

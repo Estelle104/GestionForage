@@ -2,7 +2,15 @@ package com.example.forage.entity;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "status_demande")
@@ -12,15 +20,24 @@ public class StatusDemande {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_demande")
     private Demande demande;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_status")
     private Status status;
 
-    private Timestamp dateStatus;
+    private Timestamp date_status;
 
     public StatusDemande() {
+    }
+
+    @PrePersist
+    public void onCreate() {
+        if (date_status == null) {
+            date_status = new Timestamp(System.currentTimeMillis());
+        }
     }
 
     public Long getId() {
@@ -43,19 +60,15 @@ public class StatusDemande {
         return status;
     }
 
-    public void setStatus(Status status2) {
-        this.status = status2;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Timestamp getDateStatus() {
-        return dateStatus;
+        return date_status;
     }
 
     public void setDateStatus(Timestamp dateStatus) {
-        this.dateStatus = dateStatus;
+        this.date_status = dateStatus;
     }
-
-
-
-    
 }

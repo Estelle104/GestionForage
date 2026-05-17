@@ -1,8 +1,15 @@
 package com.example.forage.entity;
 
 import java.sql.Timestamp;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "demande")
@@ -14,14 +21,29 @@ public class Demande {
 
     private String reference;
 
-    private String nomDemandeur;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_client")
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_commune")
+    private Commune commune;
 
     private String lieuForage;
 
     private Timestamp dateDemande;
 
+    private String statusDemande;
+
 
     public Demande() {
+    }
+
+    @PrePersist
+    public void onCreate() {
+        if (dateDemande == null) {
+            dateDemande = new Timestamp(System.currentTimeMillis());
+        }
     }
 
     public Long getId() {
@@ -36,12 +58,20 @@ public class Demande {
         this.reference = reference;
     }
 
-    public String getNomDemandeur() {
-        return nomDemandeur;
+    public Client getClient() {
+        return client;
     }
 
-    public void setNomDemandeur(String nomDemandeur) {
-        this.nomDemandeur = nomDemandeur;
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Commune getCommune() {
+        return commune;
+    }
+
+    public void setCommune(Commune commune) {
+        this.commune = commune;
     }
 
     public String getLieuForage() {
@@ -58,5 +88,13 @@ public class Demande {
 
     public void setDateDemande(Timestamp dateDemande) {
         this.dateDemande = dateDemande;
+    }
+
+    public String getStatusDemande() {
+        return statusDemande;
+    }
+
+    public void setStatusDemande(String statusDemande) {
+        this.statusDemande = statusDemande;
     }
 }

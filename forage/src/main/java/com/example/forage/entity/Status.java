@@ -1,6 +1,10 @@
 package com.example.forage.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "status")
@@ -9,7 +13,7 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    private String libele;
 
 
     public Status() {
@@ -19,11 +23,11 @@ public class Status {
         return id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getLibele() {
+        return libele;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setLibele(String libele) {
+        this.libele = libele;
     }
 }

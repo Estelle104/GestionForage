@@ -80,6 +80,13 @@
             <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+        <!-- iTextPDF pour export PDF -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -91,6 +98,9 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>17</release>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
