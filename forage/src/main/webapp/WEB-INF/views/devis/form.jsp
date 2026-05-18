@@ -343,24 +343,24 @@
             tbody.innerHTML = '';
 
             if (lignes.length === 0) {
-                tbody.innerHTML = '<tr id="emptyRow"><td colspan="7" class="empty-details">Aucune ligne ajoutée.</td></tr>';
+                tbody.innerHTML = '<tr id="emptyRow"><td colspan="7" class="empty-details">Aucune ligne ajoutée. Remplissez le formulaire ci-dessus.</td></tr>';
                 total = 0;
             } else {
                 total = 0;
                 lignes.forEach((l, i) => {
                     total += l.montantParLigne;
-                    tbody.innerHTML += \`
-                        <tr>
-                            <td>\${i + 1}</td>
-                            <td>\${escHtml(l.designation)}</td>
-                            <td class="text-center">\${l.quantite.toFixed(2)}</td>
-                            <td class="text-center">\${escHtml(l.unite)}</td>
-                            <td class="text-right">\${l.prixUnitaire.toFixed(2)}</td>
-                            <td class="text-right montant-col">\${l.montantParLigne.toFixed(2)}</td>
-                            <td class="text-center">
-                                <button type="button" class="btn-danger-sm" onclick="supprimerLigne(\${i})">✕</button>
-                            </td>
-                        </tr>\`;
+                    let html = '<tr>';
+                    html += '<td>' + (i + 1) + '</td>';
+                    html += '<td>' + escHtml(l.designation) + '</td>';
+                    html += '<td class="text-center">' + l.quantite.toFixed(2) + '</td>';
+                    html += '<td class="text-center">' + escHtml(l.unite) + '</td>';
+                    html += '<td class="text-right">' + l.prixUnitaire.toFixed(2) + '</td>';
+                    html += '<td class="text-right montant-col">' + l.montantParLigne.toFixed(2) + '</td>';
+                    html += '<td class="text-center">';
+                    html += '<button type="button" class="btn-danger-sm" onclick="supprimerLigne(' + i + ')">✕</button>';
+                    html += '</td>';
+                    html += '</tr>';
+                    tbody.innerHTML += html;
                 });
             }
 

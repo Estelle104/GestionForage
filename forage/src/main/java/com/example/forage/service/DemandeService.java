@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -45,18 +46,19 @@ public class DemandeService {
     }
 
     @Transactional
-    public void creerDemande(Demande d, Long clientId, Long communeId, Long idStatus, String lieuForage) {
+    public void creerDemande(String reference, Long clientId, Long communeId, Long idStatus, String lieuForage) {
 
-        if (d == null)
-            return;
+        if (reference == null || reference.isBlank()) {
+            throw new RuntimeException("La reference est obligatoire");
+        }
 
         for (Demande demande : repo.findAll()) {
-            if (demande.getReference().equals(d.getReference())) {
-                throw new RuntimeException(" Cette reference existe deja . La reference doit etre unique");
+            if (demande.getReference() != null && demande.getReference().equals(reference)) {
+                throw new RuntimeException("Cette reference existe deja. La reference doit etre unique");
             }
         }
 
-        if (clientId == null || communeId == null || lieuForage == null) {
+        if (clientId == null || communeId == null || lieuForage == null || lieuForage.isBlank()) {
             throw new RuntimeException("Client, commune et lieu de forage sont obligatoires");
         }
 
@@ -71,10 +73,23 @@ public class DemandeService {
 
         Status status = statusRepo.findById(idStatus).orElseThrow(() -> new RuntimeException("Status not found"));
 
+        Demande d = new Demande();
+        d.setReference(reference);
         d.setClient(client);
         d.setCommune(commune);
+        d.setStatus(status);
         d.setStatusDemande(status.getLibele());
         d.setLieuForage(lieuForage);
+
+        if (d.getDateDemande() == null) {
+            d.setDateDemande(new Timestamp(System.currentTimeMillis()));
+        }
+
+        System.out.println("[DemandeService] save reference=" + reference
+                + " clientId=" + clientId
+                + " communeId=" + communeId
+                + " statusId=" + idStatus
+                + " lieuForage=" + lieuForage);
 
         repo.save(d);
 

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -29,11 +30,18 @@ public class Demande {
     @JoinColumn(name = "id_commune")
     private Commune commune;
 
+    @Column(name = "lieu_forage", nullable = false)
     private String lieuForage;
 
+    @Column(name = "date_demande", nullable = false)
     private Timestamp dateDemande;
 
+    @Column(name = "status_demande")
     private String statusDemande;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_status", nullable = false)
+    private Status status;
 
 
     public Demande() {
@@ -96,5 +104,13 @@ public class Demande {
 
     public void setStatusDemande(String statusDemande) {
         this.statusDemande = statusDemande;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

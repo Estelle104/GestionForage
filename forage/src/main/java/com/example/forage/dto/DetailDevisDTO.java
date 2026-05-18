@@ -1,9 +1,6 @@
 package com.example.forage.dto;
 
-/**
- * DTO pour un détail de devis
- * Utilisé pour recevoir les données de détails (depuis le formulaire en JSON)
- */
+
 public class DetailDevisDTO {
     private String designation;
     private Double quantite;

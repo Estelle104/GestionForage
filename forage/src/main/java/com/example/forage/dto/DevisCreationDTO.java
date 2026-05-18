@@ -2,10 +2,6 @@ package com.example.forage.dto;
 
 import java.util.List;
 
-/**
- * DTO pour la création de devis avec ses détails
- * Utilisé pour recevoir les données du formulaire (JSON)
- */
 public class DevisCreationDTO {
     private String demandeReference;
     private Long typeId;
