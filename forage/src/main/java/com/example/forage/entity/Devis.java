@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "devis")
@@ -41,7 +42,7 @@ public class Devis {
     @OneToMany(mappedBy = "devis", fetch = FetchType.LAZY)
     private List<DetailsDevis> details = new ArrayList<>();
 
-    @Column(name = "montant_devis", nullable = false)
+    @Transient
     private Double montantDevis = 0.0;
 
     public Devis() {
@@ -71,6 +72,15 @@ public class Devis {
     }
 
     public Double getMontantDevis() {
+        if (details != null && !details.isEmpty()) {
+            double total = 0.0;
+            for (DetailsDevis d : details) {
+                if (d.getMontantParLigne() != null) {
+                    total += d.getMontantParLigne();
+                }
+            }
+            return total;
+        }
         return montantDevis;
     }
 

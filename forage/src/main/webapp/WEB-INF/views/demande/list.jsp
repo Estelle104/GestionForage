@@ -221,7 +221,7 @@
                                     <fmt:formatDate value="${demande.dateDemande}" pattern="dd/MM/yyyy HH:mm"/>
                                 </td>
                                 <td>
-                                    <span class="status-badge status-${demande.statusDemande}">${demande.statusDemande}</span>
+                                    <span class="status-badge status-${demande.status.libele}">${demande.status.libele}</span>
                                 </td>
                             </tr>
                         </c:forEach>

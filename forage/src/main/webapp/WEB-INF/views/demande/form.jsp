@@ -185,6 +185,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="dateDemande">Date demande</label>
+                    <input type="datetime-local" name="dateDemande" id="dateDemande" />
+                </div>
+
+                <div class="form-group">
                     <label for="statusId">Status initial</label>
                     <select name="statusId" id="statusId">
                         <option value="">-- automatique --</option>

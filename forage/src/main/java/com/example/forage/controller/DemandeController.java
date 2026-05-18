@@ -5,6 +5,9 @@ import com.example.forage.service.DemandeService;
 import com.example.forage.repository.ClientRepository;
 import com.example.forage.repository.CommuneRepository;
 import com.example.forage.repository.StatusRepository;
+
+import java.sql.Timestamp;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +49,13 @@ public class DemandeController {
                        @RequestParam Long clientId,
                        @RequestParam Long communeId,
                        @RequestParam String lieuForage,
-                       @RequestParam(required = false) Long statusId) {
+                       @RequestParam(required = false) Long statusId,
+                        @RequestParam(required = false) String dateDemande) {
+                    
+        // parser le string en timestamp 
+        Timestamp dateT = Timestamp.valueOf(dateDemande);
 
-        service.creerDemande(demande, clientId, communeId, statusId, lieuForage);
+        service.creerDemande(demande.getReference(), clientId, communeId, statusId, lieuForage, dateT );
 
         return "redirect:/demandes";
     }
