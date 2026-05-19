@@ -15,6 +15,7 @@ public class Status {
 
     private String libele;
 
+    private String sigle;
 
     public Status() {
     }
@@ -23,11 +24,23 @@ public class Status {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getLibele() {
         return libele;
     }
 
     public void setLibele(String libele) {
         this.libele = libele;
+    }
+
+    public String getSigle() {
+        return sigle;
+    }
+
+    public void setSigle(String sigle) {
+        this.sigle = sigle;
     }
 }

@@ -13,7 +13,6 @@ com/example/forage/controller/HomeController.class
 com/example/forage/entity/StatusDemande.class
 com/example/forage/controller/DevisController.class
 com/example/forage/entity/Demande.class
-com/example/forage/repository/StatusDevisRepository.class
 com/example/forage/config/WebConfig.class
 com/example/forage/entity/Status.class
 com/example/forage/entity/Type.class
@@ -24,7 +23,6 @@ com/example/forage/repository/StatusDemandeRepository.class
 com/example/forage/dto/DevisCreationDTO.class
 com/example/forage/service/DemandeService.class
 com/example/forage/config/WebApplicationInitializer.class
-com/example/forage/entity/StatusDevis.class
 com/example/forage/repository/DevisRepository.class
 com/example/forage/controller/DemandeController.class
 com/example/forage/config/JpaConfig.class

@@ -15,7 +15,6 @@
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/Region.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/Status.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/StatusDemande.java
-/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/StatusDevis.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/Type.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/entity/TypeDevisStatus.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/ClientRepository.java
@@ -24,7 +23,6 @@
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/DetailsDevisRepository.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/DevisRepository.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/StatusDemandeRepository.java
-/home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/StatusDevisRepository.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/StatusRepository.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/repository/TypeRepository.java
 /home/estelle/S4/MrNaina/WebDyn/SpringMVC/GestionForage/forage/src/main/java/com/example/forage/service/DemandeService.java

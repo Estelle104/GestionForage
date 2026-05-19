@@ -46,7 +46,7 @@ public class DemandeService {
     }
 
     @Transactional
-    public void creerDemande(String reference, Long clientId, Long communeId, Long idStatus, String lieuForage) {
+    public void creerDemande(String reference, Long clientId, Long communeId, Long idStatus, String lieuForage, Timestamp dateDemande) {
 
         if (reference == null || reference.isBlank()) {
             throw new RuntimeException("La reference est obligatoire");
@@ -72,17 +72,18 @@ public class DemandeService {
         }
 
         Status status = statusRepo.findById(idStatus).orElseThrow(() -> new RuntimeException("Status not found"));
-
+        
         Demande d = new Demande();
         d.setReference(reference);
         d.setClient(client);
         d.setCommune(commune);
         d.setStatus(status);
-        d.setStatusDemande(status.getLibele());
         d.setLieuForage(lieuForage);
 
-        if (d.getDateDemande() == null) {
+        if (dateDemande == null) {
             d.setDateDemande(new Timestamp(System.currentTimeMillis()));
+        } else {
+            d.setDateDemande(dateDemande);
         }
 
         System.out.println("[DemandeService] save reference=" + reference

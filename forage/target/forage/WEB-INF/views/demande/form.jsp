@@ -1,245 +1,212 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <!DOCTYPE html>
-        <html lang="fr">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle Demande - GestionForage</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+        }
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Nouvelle Demande - GestionForage</title>
-            <style>
-                * {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
+        /* Navigation */
+        .navbar {
+            background: #2d2d2d;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            height: 56px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .navbar .brand {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-right: 40px;
+            letter-spacing: 0.5px;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+        .navbar .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .navbar .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+        .navbar .nav-links a.active {
+            color: #fff;
+            border-bottom-color: #f0c040;
+        }
 
-                body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background: #f5f5f5;
-                    color: #333;
-                    min-height: 100vh;
-                }
+        .container {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        h1 {
+            font-size: 26px;
+            color: #2d2d2d;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+        .card {
+            background: #fff;
+            border-radius: 6px;
+            padding: 28px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #444;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+            background: #fff;
+            color: #333;
+        }
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #666;
+            box-shadow: 0 0 0 2px rgba(100,100,100,0.1);
+        }
+        .required::after {
+            content: " *";
+            color: #c62828;
+        }
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+        }
 
-                /* Navigation */
-                .navbar {
-                    background: #2d2d2d;
-                    padding: 0 30px;
-                    display: flex;
-                    align-items: center;
-                    height: 56px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-                }
+        /* Boutons */
+        .btn {
+            display: inline-block;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-green {
+            background: #2e7d32;
+            color: #fff;
+        }
+        .btn-green:hover {
+            background: #1b5e20;
+            box-shadow: 0 2px 8px rgba(46,125,50,0.3);
+        }
+        .btn-grey {
+            background: #777;
+            color: #fff;
+        }
+        .btn-grey:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
+        <ul class="nav-links">
+            <li><a href="${pageContext.request.contextPath}/demandes" class="active">Demandes</a></li>
+            <li><a href="${pageContext.request.contextPath}/devis">Devis</a></li>
+        </ul>
+    </nav>
 
-                .navbar .brand {
-                    color: #fff;
-                    font-size: 18px;
-                    font-weight: 700;
-                    text-decoration: none;
-                    margin-right: 40px;
-                    letter-spacing: 0.5px;
-                }
+    <div class="container">
+        <h1>Nouvelle Demande</h1>
 
-                .navbar .nav-links {
-                    display: flex;
-                    gap: 0;
-                    list-style: none;
-                }
+        <div class="card">
+            <form action="${pageContext.request.contextPath}/demandes/save" method="post">
 
-                .navbar .nav-links a {
-                    color: #ccc;
-                    text-decoration: none;
-                    padding: 16px 20px;
-                    font-size: 14px;
-                    font-weight: 500;
-                    transition: all 0.2s ease;
-                    border-bottom: 3px solid transparent;
-                }
-
-                .navbar .nav-links a:hover {
-                    color: #fff;
-                    background: rgba(255, 255, 255, 0.05);
-                }
-
-                .navbar .nav-links a.active {
-                    color: #fff;
-                    border-bottom-color: #f0c040;
-                }
-
-                .container {
-                    max-width: 620px;
-                    margin: 0 auto;
-                    padding: 30px 20px;
-                }
-
-                h1 {
-                    font-size: 26px;
-                    color: #2d2d2d;
-                    margin-bottom: 20px;
-                    padding-bottom: 10px;
-                    border-bottom: 2px solid #ddd;
-                }
-
-                .card {
-                    background: #fff;
-                    border-radius: 6px;
-                    padding: 28px;
-                    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-                }
-
-                .form-group {
-                    margin-bottom: 18px;
-                }
-
-                .form-group label {
-                    display: block;
-                    margin-bottom: 5px;
-                    font-weight: 600;
-                    font-size: 13px;
-                    color: #444;
-                }
-
-                .form-group select,
-                .form-group input {
-                    width: 100%;
-                    padding: 9px 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    font-size: 14px;
-                    transition: border-color 0.2s ease;
-                    background: #fff;
-                    color: #333;
-                }
-
-                .form-group select:focus,
-                .form-group input:focus {
-                    outline: none;
-                    border-color: #666;
-                    box-shadow: 0 0 0 2px rgba(100, 100, 100, 0.1);
-                }
-
-                .required::after {
-                    content: " *";
-                    color: #c62828;
-                }
-
-                .form-actions {
-                    display: flex;
-                    gap: 12px;
-                    margin-top: 22px;
-                }
-
-                /* Boutons */
-                .btn {
-                    display: inline-block;
-                    padding: 10px 22px;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    text-decoration: none;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                }
-
-                .btn-green {
-                    background: #2e7d32;
-                    color: #fff;
-                }
-
-                .btn-green:hover {
-                    background: #1b5e20;
-                    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
-                }
-
-                .btn-grey {
-                    background: #777;
-                    color: #fff;
-                }
-
-                .btn-grey:hover {
-                    background: #555;
-                }
-            </style>
-        </head>
-
-        <body>
-            <nav class="navbar">
-                <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
-                <ul class="nav-links">
-                    <li><a href="${pageContext.request.contextPath}/demandes" class="active">Demandes</a></li>
-                    <li><a href="${pageContext.request.contextPath}/devis">Devis</a></li>
-                </ul>
-            </nav>
-
-            <div class="container">
-                <h1>Nouvelle Demande</h1>
-
-                <div class="card">
-                    <form action="${pageContext.request.contextPath}/demandes/save" method="post">
-
-                        <c:if test="${not empty error}">
-                            <div class="form-group" style="color:#c62828;font-weight:600;margin-bottom:12px;">
-                                ${error}
-                            </div>
-                        </c:if>
-
-                        <div class="form-group">
-                            <label for="reference" class="required">Reference</label>
-                            <input type="text" name="reference" id="reference" required
-                                placeholder="Ex: DEM-2026-001" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="clientId" class="required">Client</label>
-                            <select name="clientId" id="clientId" required>
-                                <option value="">-- Choisir un client --</option>
-                                <c:forEach items="${clients}" var="client">
-                                    <option value="${client.id}">${client.nom}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="communeId" class="required">Commune</label>
-                            <select name="communeId" id="communeId" required>
-                                <option value="">-- Choisir une commune --</option>
-                                <c:forEach items="${communes}" var="commune">
-                                    <option value="${commune.id}">${commune.nom}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lieuForage" class="required">Lieu de forage</label>
-                            <input type="text" name="lieuForage" id="lieuForage" required
-                                placeholder="Ex: Parcelle 12, zone nord" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="statusId">Status initial</label>
-                            <select name="statusId" id="statusId">
-                                <option value="">-- automatique --</option>
-                                <c:forEach items="${statuses}" var="status">
-                                    <option value="${status.id}">${status.libele}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <!-- Date avec heure, format : yyyy-MM-dd   HH:mm -->
-                        <div class="form-group">
-                            <label for="dateDemande">Date de la demande</label>
-                            <input type="datetime-local" name="dateDemande" id="dateDemande">
-                        </div>
-
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-green">Demander un forage</button>
-                            <a href="${pageContext.request.contextPath}/demandes" class="btn btn-grey">Annuler</a>
-                        </div>
-                    </form>
+                <div class="form-group">
+                    <label for="reference" class="required">Reference</label>
+                    <input type="text" name="reference" id="reference" required placeholder="Ex: DEM-2026-001" />
                 </div>
-            </div>
-        </body>
 
-        </html>
+                <div class="form-group">
+                    <label for="clientId" class="required">Client</label>
+                    <select name="clientId" id="clientId" required>
+                        <option value="">-- Choisir un client --</option>
+                        <c:forEach items="${clients}" var="client">
+                            <option value="${client.id}">${client.nom}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="communeId" class="required">Commune</label>
+                    <select name="communeId" id="communeId" required>
+                        <option value="">-- Choisir une commune --</option>
+                        <c:forEach items="${communes}" var="commune">
+                            <option value="${commune.id}">${commune.nom}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lieuForage" class="required">Lieu de forage</label>
+                    <input type="text" name="lieuForage" id="lieuForage" required placeholder="Ex: Parcelle 12, zone nord" />
+                </div>
+
+                <div class="form-group">
+                    <label for="dateDemande">Date demande</label>
+                    <input type="datetime-local" name="dateDemande" id="dateDemande" />
+                </div>
+
+                <div class="form-group">
+                    <label for="statusId">Status initial</label>
+                    <select name="statusId" id="statusId">
+                        <option value="">-- automatique --</option>
+                        <c:forEach items="${statuses}" var="status">
+                            <option value="${status.id}">${status.libele}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-green">Demander un forage</button>
+                    <a href="${pageContext.request.contextPath}/demandes" class="btn btn-grey">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

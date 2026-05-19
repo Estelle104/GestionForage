@@ -36,8 +36,7 @@ public class Demande {
     @Column(name = "date_demande", nullable = false)
     private Timestamp dateDemande;
 
-    @Column(name = "status_demande")
-    private String statusDemande;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_status", nullable = false)
@@ -98,13 +97,7 @@ public class Demande {
         this.dateDemande = dateDemande;
     }
 
-    public String getStatusDemande() {
-        return statusDemande;
-    }
 
-    public void setStatusDemande(String statusDemande) {
-        this.statusDemande = statusDemande;
-    }
 
     public Status getStatus() {
         return status;
