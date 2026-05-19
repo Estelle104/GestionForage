@@ -57,12 +57,18 @@ public class DevisService {
     }
 
     public List<Devis> findAll() {
-        return devisRepo.findAll();
+        List<Devis> devisList = devisRepo.findAll();
+        for (Devis devis : devisList) {
+            devis.setMontantDevis(calculerTotalParDevisId(devis.getId()));
+        }
+        return devisList;
     }
 
     public Devis findById(Long id) {
-        return devisRepo.findById(id)
+        Devis devis = devisRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Devis introuvable avec l'id: " + id));
+        devis.setMontantDevis(calculerTotalParDevisId(id));
+        return devis;
     }
 
     @Transactional
@@ -146,15 +152,20 @@ public class DevisService {
     }
 
     private void recalculerMontantDevis(Devis devis) {
-        List<DetailsDevis> details = detailsRepo.findByDevisId(devis.getId());
+        double total = calculerTotalParDevisId(devis.getId());
+        devis.setMontantDevis(total);
+        devisRepo.save(devis);
+    }
+
+    private double calculerTotalParDevisId(Long devisId) {
+        List<DetailsDevis> details = detailsRepo.findByDevisId(devisId);
         double total = 0.0;
         for (DetailsDevis d : details) {
             if (d.getMontantParLigne() != null) {
                 total += d.getMontantParLigne();
             }
         }
-        devis.setMontantDevis(total);
-        devisRepo.save(devis);
+        return total;
     }
 
     public void genererPdf(Long devisId, OutputStream out) {

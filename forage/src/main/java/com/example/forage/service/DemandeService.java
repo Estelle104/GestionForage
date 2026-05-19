@@ -80,11 +80,11 @@ public class DemandeService {
         d.setStatus(status);
         d.setLieuForage(lieuForage);
 
-        if (d.getDateDemande() == null) {
+        if (dateDemande == null) {
             d.setDateDemande(new Timestamp(System.currentTimeMillis()));
+        } else {
+            d.setDateDemande(dateDemande);
         }
-        
-        d.setDateDemande(dateDemande);
 
         System.out.println("[DemandeService] save reference=" + reference
                 + " clientId=" + clientId
