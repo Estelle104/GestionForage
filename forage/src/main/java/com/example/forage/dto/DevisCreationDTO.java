@@ -1,12 +1,23 @@
 package com.example.forage.dto;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class DevisCreationDTO {
     private String demandeReference;
     private Long typeId;
     private String observation;
+    private Timestamp createdAt;
     private List<DetailDevisDTO> details;
+
+    public DevisCreationDTO(String demandeReference, Long typeId, String observation, Timestamp createdAt,
+            List<DetailDevisDTO> details) {
+        this.demandeReference = demandeReference;
+        this.typeId = typeId;
+        this.observation = observation;
+        this.createdAt = createdAt;
+        this.details = details;
+    }
 
     public DevisCreationDTO() {
     }
@@ -54,5 +65,13 @@ public class DevisCreationDTO {
     public String toString() {
         return "DevisCreationDTO [demandeReference=" + demandeReference + ", typeId=" + typeId
                 + ", observation=" + observation + ", details=" + details + "]";
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

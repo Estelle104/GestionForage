@@ -181,6 +181,12 @@
             </div>
 
             <div class="form-group">
+                <label for="dateDevis" class="required">Type de devis</label>
+                <input type="datetime-local" name="dateDevis" id="dateDevis>
+            </div>
+
+            
+            <div class="form-group">
                 <label for="observation">Observation</label>
                 <textarea id="observation" placeholder="Remarques, conditions particulières..."></textarea>
             </div>

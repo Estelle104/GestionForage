@@ -164,3 +164,18 @@ Enregistre -> Devis, demande_status, details_devis (transaction)
 - pour la demande, quand on saisie un demande, on affiche dessous le client pour ce demande, le lieu et la date de creation de ce demande via ajax lors de onblur
 
 - On cree un devis, il y a un bouton ajouter details, il y a des champs pour le details devis, on garde chaque details sur une variable js, et ainsi de suite et a la fin il y a un bouton enregistrer
+
+
+## 19/05/26
+IL y aura 2 interface :
+- Ajout de status_demande
+    - demande
+    - date
+    - observation
+    - status (liste deroulante)
+
+- Modification de status_demande
+    - Demande ( liste deroulante )
+    - Date
+    - Observation
+    - Status ( liste deroulante )
