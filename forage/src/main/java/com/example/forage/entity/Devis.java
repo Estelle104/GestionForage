@@ -72,16 +72,7 @@ public class Devis {
     }
 
     public Double getMontantDevis() {
-        if (details != null && !details.isEmpty()) {
-            double total = 0.0;
-            for (DetailsDevis d : details) {
-                if (d.getMontantParLigne() != null) {
-                    total += d.getMontantParLigne();
-                }
-            }
-            return total;
-        }
-        return montantDevis;
+        return montantDevis != null ? montantDevis : 0.0;
     }
 
     public void setMontantDevis(Double montantDevis) {
