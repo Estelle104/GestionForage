@@ -140,6 +140,14 @@
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
+        <ul class="nav-links">
+            <li><a href="${pageContext.request.contextPath}/demandes" class="active">Demandes</a></li>
+            <li><a href="${pageContext.request.contextPath}/devis">Devis</a></li>
+            <li><a href="${pageContext.request.contextPath}/status-demandes">Status Demande</a></li>
+        </ul>
+    </nav>
     <div class="container">
         <h1>${statusDemande != null ? 'Modifier le statut de la demande' : 'Ajouter un nouveau statut'}</h1>
         

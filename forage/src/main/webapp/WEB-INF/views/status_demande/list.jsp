@@ -177,13 +177,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <nav class="navbar">
+        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/demandes">Demandes</a></li>
             <li><a href="${pageContext.request.contextPath}/devis">Devis</a></li>
             <li><a href="${pageContext.request.contextPath}/status-demandes" class="active">Statuts Demandes</a></li>
         </ul>
-
+        
+    </nav>
+    <div class="container">
         <h1>Historique des Statuts de Demandes</h1>
         <a href="${pageContext.request.contextPath}/status-demandes/create" class="btn">Nouveau Statut Demande</a>
         
