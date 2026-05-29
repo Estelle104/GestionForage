@@ -36,7 +36,62 @@ public class StatusDemandeController {
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("statusDemandes", statusDemandeService.findAll());
+        java.util.List<StatusDemande> list = statusDemandeService.findAll();
+        
+        list.sort((a, b) -> {
+            int c = a.getDemande().getId().compareTo(b.getDemande().getId());
+            if (c == 0) {
+                return a.getDateStatus().compareTo(b.getDateStatus());
+            }
+            return c;
+        });
+
+        java.util.Map<Integer, Long> lastDateMap = new java.util.HashMap<>();
+        java.util.Map<Integer, Long> durationMap = new java.util.HashMap<>();
+        long maxDuration = 1;
+
+        for (StatusDemande sd : list) {
+            Integer demandeId = sd.getDemande().getId();
+            long current = sd.getDateStatus().getTime();
+            if (lastDateMap.containsKey(demandeId)) {
+                long prev = lastDateMap.get(demandeId);
+                long diff = current - prev;
+                durationMap.put(sd.getId(), diff);
+                if (diff > maxDuration) {
+                    maxDuration = diff;
+                }
+            } else {
+                durationMap.put(sd.getId(), 0L);
+            }
+            lastDateMap.put(demandeId, current);
+        }
+
+        java.util.Map<Integer, String> dureeMap = new java.util.HashMap<>();
+        java.util.Map<Integer, String> colorMap = new java.util.HashMap<>();
+
+        for (StatusDemande sd : list) {
+            long diff = durationMap.get(sd.getId());
+            if (diff == 0) {
+                dureeMap.put(sd.getId(), "-");
+                colorMap.put(sd.getId(), "transparent");
+            } else {
+                long diffHours = diff / (60 * 60 * 1000);
+                long diffDays = diffHours / 24;
+                long remHours = diffHours % 24;
+                String dStr = "";
+                if (diffDays > 0) dStr += diffDays + "j ";
+                dStr += remHours + "h";
+                dureeMap.put(sd.getId(), dStr);
+                
+                double intensity = (double) diff / maxDuration;
+                intensity = 0.1 + (0.9 * intensity); // from 0.1 to 1.0
+                colorMap.put(sd.getId(), "rgba(255, 0, 0, " + String.format(java.util.Locale.US, "%.2f", intensity) + ")");
+            }
+        }
+
+        model.addAttribute("statusDemandes", list);
+        model.addAttribute("dureeMap", dureeMap);
+        model.addAttribute("colorMap", colorMap);
         return "status_demande/list";
     }
 

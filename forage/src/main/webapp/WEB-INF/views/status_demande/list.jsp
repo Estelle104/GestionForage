@@ -197,6 +197,8 @@
                     <th>Demande (Ref)</th>
                     <th>Date</th>
                     <th>Status</th>
+                    <th>Durée</th>
+                    <th>Intensité</th>
                     <th>Observation</th>
                     <th>Actions</th>
                 </tr>
@@ -208,6 +210,17 @@
                         <td>${sd.demande.reference}</td>
                         <td><fmt:formatDate value="${sd.dateStatus}" pattern="dd/MM/yyyy HH:mm"/></td>
                         <td>${sd.status.libele}</td>
+                        <td>${dureeMap[sd.id]}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${colorMap[sd.id] != 'transparent'}">
+                                    <div style="width:100%; min-width:60px; height:24px; border-radius:4px; background:${colorMap[sd.id]}" title="${dureeMap[sd.id]}"></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <span style="color:#bbb;">—</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>${sd.observation}</td>
                         <td>
                             <a href="${pageContext.request.contextPath}/status-demandes/edit/${sd.id}" class="btn">Modifier</a>
