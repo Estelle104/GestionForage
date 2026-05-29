@@ -43,7 +43,11 @@ if [ -x "$TOMCAT_HOME/bin/version.sh" ]; then
 fi
 
 echo "--- Maven: build package ---"
-mvn -DskipTests clean package
+MVN="mvn"
+if ! command -v mvn >/dev/null 2>&1 && [ -x "/opt/maven/bin/mvn" ]; then
+  MVN="/opt/maven/bin/mvn"
+fi
+$MVN -DskipTests clean package
 
 WAR="$PROJECT_DIR/target/forage.war"
 if [ ! -f "$WAR" ]; then
