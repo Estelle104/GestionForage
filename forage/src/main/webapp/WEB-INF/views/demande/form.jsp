@@ -145,6 +145,7 @@
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/demandes" class="active">Demandes</a></li>
             <li><a href="${pageContext.request.contextPath}/devis">Devis</a></li>
+            <li><a href="${pageContext.request.contextPath}/status-demandes">Status Demande</a></li>
         </ul>
     </nav>
 

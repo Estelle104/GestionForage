@@ -69,7 +69,7 @@ public class StatusDemandeController {
         } catch (Exception e) {
             ts = new Timestamp(System.currentTimeMillis());
         }
-
+        
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.setTimeInMillis(ts.getTime());
         int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
@@ -82,7 +82,7 @@ public class StatusDemandeController {
         if (hourOfDay < 8 || hourOfDay > 16 || (hourOfDay == 16 && minute > 0)) {
             throw new IllegalArgumentException("L'heure d'insertion doit être comprise entre 8h et 16h.");
         }
-
+            
         sd.setDateStatus(ts);
         sd.setObservation(observation);
         statusDemandeService.save(sd);
