@@ -2,6 +2,7 @@ package com.example.forage.controller;
 
 import java.sql.Timestamp;
 
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class StatusDemandeController {
         model.addAttribute("statusDemandes", statusDemandeService.findAll());
         return "status_demande/list"; 
     }
-
+    
     @GetMapping("/create")
     public String createForm(Model model) {
         model.addAttribute("demandes", demandeRepository.findAll());
@@ -46,9 +47,10 @@ public class StatusDemandeController {
         return "status_demande/form";
     }
 
+
     @PostMapping("/create")
-    public String create(@RequestParam Integer demandeId,
-                         @RequestParam Integer statusId,
+    public String create(@RequestParam @NonNull Integer demandeId,
+                         @RequestParam @NonNull Integer statusId,
                          @RequestParam String dateStatus,
                          @RequestParam String observation) {
         Demande demande = demandeRepository.findById(demandeId).orElseThrow();
@@ -57,22 +59,33 @@ public class StatusDemandeController {
         StatusDemande sd = new StatusDemande();
         sd.setDemande(demande);
         sd.setStatus(status);
+        
+        Timestamp ts;
         try {
             if (dateStatus != null && !dateStatus.isEmpty()) {
-                sd.setDateStatus(Timestamp.valueOf(dateStatus.replace("T", " ") + (dateStatus.length() == 16 ? ":00" : "")));
+                ts = Timestamp.valueOf(dateStatus.replace("T", " ") + (dateStatus.length() == 16 ? ":00" : ""));
             } else {
-                sd.setDateStatus(new Timestamp(System.currentTimeMillis()));
+                ts = new Timestamp(System.currentTimeMillis());
             }
         } catch (Exception e) {
-            sd.setDateStatus(new Timestamp(System.currentTimeMillis()));
+            ts = new Timestamp(System.currentTimeMillis());
         }
+        
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTimeInMillis(ts.getTime());
+        int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
+        if (dayOfWeek == java.util.Calendar.SATURDAY || dayOfWeek == java.util.Calendar.SUNDAY) {
+            throw new IllegalArgumentException("La date doit être un jour ouvrable (lundi à vendredi).");
+        }
+        
+        sd.setDateStatus(ts);
         sd.setObservation(observation);
         statusDemandeService.save(sd);
         
         // Mettre à jour le status de la demande
         demande.setStatus(status);
         demandeRepository.save(demande);
-
+        
         return "redirect:/status-demandes";
     }
 
@@ -87,8 +100,8 @@ public class StatusDemandeController {
 
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Integer id,
-                         @RequestParam Integer demandeId,
-                         @RequestParam Integer statusId,
+                         @RequestParam @NonNull Integer demandeId,
+                         @RequestParam @NonNull Integer statusId,
                          @RequestParam String dateStatus,
                          @RequestParam String observation) {
         StatusDemande sd = statusDemandeService.findById(id);
