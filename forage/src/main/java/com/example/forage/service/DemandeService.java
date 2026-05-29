@@ -46,7 +46,7 @@ public class DemandeService {
     }
 
     @Transactional
-    public void creerDemande(String reference, Long clientId, Long communeId, Long idStatus, String lieuForage, Timestamp dateDemande) {
+    public void creerDemande(String reference, Integer clientId, Integer communeId, Integer idStatus, String lieuForage, Timestamp dateDemande) {
 
         if (reference == null || reference.isBlank()) {
             throw new RuntimeException("La reference est obligatoire");
@@ -68,7 +68,7 @@ public class DemandeService {
                 .orElseThrow(() -> new RuntimeException("Commune not found"));
 
         if (idStatus == null) {
-            idStatus = 1L;
+            idStatus = 1;
         }
 
         Status status = statusRepo.findById(idStatus).orElseThrow(() -> new RuntimeException("Status not found"));

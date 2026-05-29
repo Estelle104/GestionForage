@@ -16,22 +16,22 @@ public class DetailsDevis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_devis")
     private Devis devis;
 
-    @Column(name = "quantite")
+    @Column(name = "quantite", nullable = false)
     private Double quantite;
 
-    @Column(name = "unite")
+    @Column(name = "unite", length = 20, nullable = false)
     private String unite;
 
-    @Column(name = "prix_unitaire")
+    @Column(name = "prix_unitaire", nullable = false)
     private Double prixUnitaire;
 
-    @Column(name = "designation")
+    @Column(name = "designation", columnDefinition = "TEXT", nullable = false)
     private String designation;
 
     @Column(name = "montant_par_ligne")
@@ -40,11 +40,11 @@ public class DetailsDevis {
     public DetailsDevis() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -18,17 +18,42 @@ public class StatusDemande {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_demande")
     private Demande demande;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_status")
     private Status status;
 
     private Timestamp date_status;
+
+    private String observation;
+
+    public StatusDemande(Demande demande, Status status, Timestamp date_status, String observation) {
+        this.demande = demande;
+        this.status = status;
+        this.date_status = date_status;
+        this.observation = observation;
+    }
+
+    public StatusDemande(Integer id, Demande demande, Status status, Timestamp date_status, String observation) {
+        this.id = id;
+        this.demande = demande;
+        this.status = status;
+        this.date_status = date_status;
+        this.observation = observation;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
     public StatusDemande() {
     }
@@ -40,11 +65,11 @@ public class StatusDemande {
         }
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

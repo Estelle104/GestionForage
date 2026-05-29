@@ -64,7 +64,7 @@ public class DevisService {
         return devisList;
     }
 
-    public Devis findById(Long id) {
+    public Devis findById(Integer id) {
         Devis devis = devisRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Devis introuvable avec l'id: " + id));
         devis.setMontantDevis(calculerTotalParDevisId(id));
@@ -128,7 +128,7 @@ public class DevisService {
 
         recalculerMontantDevis(devis);
 
-        Long statusId = TypeDevisStatus.getStatusIdByTypeId(devisDTO.getTypeId());
+        Integer statusId = TypeDevisStatus.getStatusIdByTypeId(devisDTO.getTypeId());
         if (statusId == null) {
             throw new RuntimeException(
                     "Aucun status par défaut n'existe pour le type de devis avec l'id: " + devisDTO.getTypeId());
@@ -147,7 +147,7 @@ public class DevisService {
         return devis;
     }
 
-    public List<DetailsDevis> getDetailsParDevis(Long devisId) {
+    public List<DetailsDevis> getDetailsParDevis(Integer devisId) {
         return detailsRepo.findByDevisId(devisId);
     }
 
@@ -157,7 +157,7 @@ public class DevisService {
         devisRepo.save(devis);
     }
 
-    private double calculerTotalParDevisId(Long devisId) {
+    private double calculerTotalParDevisId(Integer devisId) {
         List<DetailsDevis> details = detailsRepo.findByDevisId(devisId);
         double total = 0.0;
         for (DetailsDevis d : details) {
@@ -168,7 +168,7 @@ public class DevisService {
         return total;
     }
 
-    public void genererPdf(Long devisId, OutputStream out) {
+    public void genererPdf(Integer devisId, OutputStream out) {
         Devis devis = findById(devisId);
         List<DetailsDevis> details = getDetailsParDevis(devisId);
 

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.example.forage.entity.DetailsDevis;
 
 @Repository
-public interface DetailsDevisRepository extends JpaRepository<DetailsDevis, Long> {
-    List<DetailsDevis> findByDevisId(Long devisId);
+public interface DetailsDevisRepository extends JpaRepository<DetailsDevis, Integer> {
+    List<DetailsDevis> findByDevisId(Integer devisId);
 }

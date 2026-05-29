@@ -67,7 +67,7 @@ chmod 644 "$TOMCAT_HOME/webapps/$(basename "$WAR")" || true
 
 echo "Démarrage de Tomcat..."
 if [ -x "$TOMCAT_HOME/bin/startup.sh" ]; then
-  "$TOMCAT_HOME/bin/startup.sh" || true
+  setsid "$TOMCAT_HOME/bin/startup.sh" || true
 fi
 
 # Attendre que Tomcat démarre

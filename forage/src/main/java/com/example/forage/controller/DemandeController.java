@@ -48,8 +48,8 @@ public class DemandeController {
 
     @PostMapping("/save")
     public String save(@RequestParam String reference,
-                       @RequestParam Long clientId,
-                       @RequestParam Long communeId,
+                       @RequestParam Integer clientId,
+                       @RequestParam Integer communeId,
                        @RequestParam String lieuForage,
                        @RequestParam(required = false) String statusId,
                         @RequestParam(required = false) String dateDemande) {
@@ -63,7 +63,7 @@ public class DemandeController {
             }
         }
 
-        Long parsedStatusId = (statusId == null || statusId.isBlank()) ? null : Long.valueOf(statusId);
+        Integer parsedStatusId = (statusId == null || statusId.isBlank()) ? null : Integer.valueOf(statusId);
 
         service.creerDemande(reference, clientId, communeId, parsedStatusId, lieuForage, dateT);
 

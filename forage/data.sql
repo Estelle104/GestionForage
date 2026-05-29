@@ -100,9 +100,9 @@ INSERT INTO commune (nom, id_district) VALUES
 -- Betafo (id=9)
 ('Betafo', 9),
 ('Mandoto', 9),
--- Miarinarivo (id=13)
-('Miarinarivo', 13),
-('Analavory', 13),
+-- Miarinarivo (id=12)
+('Miarinarivo', 12),
+('Analavory', 12),
 -- Tsiroanomandidy (id=15)
 ('Tsiroanomandidy', 15),
 ('Mahasolo', 15),
@@ -190,5 +190,5 @@ ON status_demande(id_status);
 
 
 INSERT INTO type(libele) VALUES
-('ETUDE'),
-('FORAGE');
+('FORAGE'),
+('ETUDE');

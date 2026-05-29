@@ -8,6 +8,6 @@ import com.example.forage.entity.Status;
 
 @Repository
 public interface StatusRepository
-        extends JpaRepository<Status, Long> {
+        extends JpaRepository<Status, Integer> {
 
 }

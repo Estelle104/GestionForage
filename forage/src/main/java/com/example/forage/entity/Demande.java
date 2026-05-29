@@ -18,8 +18,9 @@ public class Demande {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+    @Column(length = 100, nullable = false, unique = true)
     private String reference;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,7 +31,7 @@ public class Demande {
     @JoinColumn(name = "id_commune")
     private Commune commune;
 
-    @Column(name = "lieu_forage", nullable = false)
+    @Column(name = "lieu_forage", nullable = false, columnDefinition = "TEXT")
     private String lieuForage;
 
     @Column(name = "date_demande", nullable = false)
@@ -53,7 +54,7 @@ public class Demande {
         }
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

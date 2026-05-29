@@ -2,24 +2,24 @@ package com.example.forage.entity;
 
 
 public enum TypeDevisStatus {
-    FORAGE(1L, 6L, "DEVIS_FORAGE_CREE"),
-    ETUDE(2L, 7L, "DEVIS_ETUDE_CREE");
+    FORAGE(1, 6, "DEVIS_FORAGE_CREE"),
+    ETUDE(2, 7, "DEVIS_ETUDE_CREE");
 
-    private final Long typeId;
-    private final Long statusId;
+    private final Integer typeId;
+    private final Integer statusId;
     private final String statusLibele;
 
-    TypeDevisStatus(Long typeId, Long statusId, String statusLibele) {
+    TypeDevisStatus(Integer typeId, Integer statusId, String statusLibele) {
         this.typeId = typeId;
         this.statusId = statusId;
         this.statusLibele = statusLibele;
     }
 
-    public Long getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public Long getStatusId() {
+    public Integer getStatusId() {
         return statusId;
     }
 
@@ -28,7 +28,7 @@ public enum TypeDevisStatus {
     }
 
     
-    public static Long getStatusIdByTypeId(Long typeId) {
+    public static Integer getStatusIdByTypeId(Integer typeId) {
         if (typeId == null) {
             return null;
         }
@@ -41,7 +41,7 @@ public enum TypeDevisStatus {
     }
 
     
-    public static String getStatusLibeleByTypeId(Long typeId) {
+    public static String getStatusLibeleByTypeId(Integer typeId) {
         if (typeId == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public enum TypeDevisStatus {
     }
 
    
-    public static TypeDevisStatus getByTypeId(Long typeId) {
+    public static TypeDevisStatus getByTypeId(Integer typeId) {
         if (typeId == null) {
             return null;
         }

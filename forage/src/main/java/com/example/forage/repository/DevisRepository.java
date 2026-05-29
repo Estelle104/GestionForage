@@ -4,5 +4,5 @@ import org.springframework.stereotype.Repository;
 import com.example.forage.entity.Devis;
 
 @Repository
-public interface DevisRepository extends JpaRepository<Devis, Long> {
+public interface DevisRepository extends JpaRepository<Devis, Integer> {
 }   

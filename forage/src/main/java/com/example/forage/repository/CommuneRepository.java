@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.example.forage.entity.Commune;
 
 @Repository
-public interface CommuneRepository extends JpaRepository<Commune, Long> {
+public interface CommuneRepository extends JpaRepository<Commune, Integer> {
 }

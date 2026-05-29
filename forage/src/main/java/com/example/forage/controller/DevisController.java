@@ -51,7 +51,7 @@ public class DevisController {
 
     // Afficher les détails d'un devis
     @GetMapping("/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable Integer id, Model model) {
         Devis devis = devisService.findById(id);
         model.addAttribute("devis", devis);
         model.addAttribute("detailsList", devisService.getDetailsParDevis(id));
@@ -61,7 +61,7 @@ public class DevisController {
 
     // Export PDF
     @GetMapping("/{id}/pdf")
-    public void exportPdf(@PathVariable Long id, HttpServletResponse response) {
+    public void exportPdf(@PathVariable Integer id, HttpServletResponse response) {
         try {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "attachment; filename=devis_" + id + ".pdf");

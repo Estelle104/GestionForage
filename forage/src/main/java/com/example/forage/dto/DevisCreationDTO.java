@@ -5,12 +5,12 @@ import java.util.List;
 
 public class DevisCreationDTO {
     private String demandeReference;
-    private Long typeId;
+    private Integer typeId;
     private String observation;
     private Timestamp createdAt;
     private List<DetailDevisDTO> details;
 
-    public DevisCreationDTO(String demandeReference, Long typeId, String observation, Timestamp createdAt,
+    public DevisCreationDTO(String demandeReference, Integer typeId, String observation, Timestamp createdAt,
             List<DetailDevisDTO> details) {
         this.demandeReference = demandeReference;
         this.typeId = typeId;
@@ -22,7 +22,7 @@ public class DevisCreationDTO {
     public DevisCreationDTO() {
     }
 
-    public DevisCreationDTO(String demandeReference, Long typeId, String observation, List<DetailDevisDTO> details) {
+    public DevisCreationDTO(String demandeReference, Integer typeId, String observation, List<DetailDevisDTO> details) {
         this.demandeReference = demandeReference;
         this.typeId = typeId;
         this.observation = observation;
@@ -37,11 +37,11 @@ public class DevisCreationDTO {
         this.demandeReference = demandeReference;
     }
 
-    public Long getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Long typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 

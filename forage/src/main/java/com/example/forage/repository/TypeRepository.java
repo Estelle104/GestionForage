@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.forage.entity.Type;
 
 @Repository
-public interface TypeRepository extends JpaRepository<Type, Long> {
+public interface TypeRepository extends JpaRepository<Type, Integer> {
 
 }
