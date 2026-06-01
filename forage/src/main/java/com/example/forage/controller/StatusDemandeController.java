@@ -1,6 +1,11 @@
 package com.example.forage.controller;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.example.forage.entity.Demande;
 import com.example.forage.entity.Status;
@@ -36,7 +42,7 @@ public class StatusDemandeController {
 
     @GetMapping
     public String list(Model model) {
-        java.util.List<StatusDemande> list = statusDemandeService.findAll();
+        List<StatusDemande> list = statusDemandeService.findAll();
         
         list.sort((a, b) -> {
             int c = a.getDemande().getId().compareTo(b.getDemande().getId());
@@ -46,31 +52,32 @@ public class StatusDemandeController {
             return c;
         });
 
-        java.util.Map<Integer, Long> lastDateMap = new java.util.HashMap<>();
-        java.util.Map<Integer, Long> durationMap = new java.util.HashMap<>();
-        long maxDuration = 1;
+        Map<Integer, Long> lastDate = new HashMap<>();
+        Map<Integer, Long> duree = new HashMap<>();
+        long maxDuree = 1;
 
         for (StatusDemande sd : list) {
             Integer demandeId = sd.getDemande().getId();
             long current = sd.getDateStatus().getTime();
-            if (lastDateMap.containsKey(demandeId)) {
-                long prev = lastDateMap.get(demandeId);
+            
+            if (lastDate.containsKey(demandeId)) {
+                long prev = lastDate.get(demandeId);
                 long diff = current - prev;
-                durationMap.put(sd.getId(), diff);
-                if (diff > maxDuration) {
-                    maxDuration = diff;
+                duree.put(sd.getId(), diff);
+                if (diff > maxDuree) {
+                    maxDuree = diff;
                 }
             } else {
-                durationMap.put(sd.getId(), 0L);
+                duree.put(sd.getId(), 0L);
             }
-            lastDateMap.put(demandeId, current);
+            lastDate.put(demandeId, current);
         }
 
-        java.util.Map<Integer, String> dureeMap = new java.util.HashMap<>();
-        java.util.Map<Integer, String> colorMap = new java.util.HashMap<>();
+        Map<Integer, String> dureeMap = new HashMap<>();
+        Map<Integer, String> colorMap = new HashMap<>();
 
         for (StatusDemande sd : list) {
-            long diff = durationMap.get(sd.getId());
+            long diff = duree.get(sd.getId());
             if (diff == 0) {
                 dureeMap.put(sd.getId(), "-");
                 colorMap.put(sd.getId(), "transparent");
@@ -83,9 +90,9 @@ public class StatusDemandeController {
                 dStr += remHours + "h";
                 dureeMap.put(sd.getId(), dStr);
                 
-                double intensity = (double) diff / maxDuration;
+                double intensity = (double) diff / maxDuree;
                 intensity = 0.1 + (0.9 * intensity); // from 0.1 to 1.0
-                colorMap.put(sd.getId(), "rgba(255, 0, 0, " + String.format(java.util.Locale.US, "%.2f", intensity) + ")");
+                colorMap.put(sd.getId(), "rgba(255, 0, 0, " + String.format(Locale.US, "%.2f", intensity) + ")");
             }
         }
 
@@ -125,15 +132,15 @@ public class StatusDemandeController {
             ts = new Timestamp(System.currentTimeMillis());
         }
         
-        java.util.Calendar cal = java.util.Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(ts.getTime());
-        int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == java.util.Calendar.SATURDAY || dayOfWeek == java.util.Calendar.SUNDAY) {
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
             throw new IllegalArgumentException("La date doit être un jour ouvrable (lundi à vendredi).");
         }
 
-        int hourOfDay = cal.get(java.util.Calendar.HOUR_OF_DAY);
-        int minute = cal.get(java.util.Calendar.MINUTE);
+        int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
         if (hourOfDay < 8 || hourOfDay > 16 || (hourOfDay == 16 && minute > 0)) {
             throw new IllegalArgumentException("L'heure d'insertion doit être comprise entre 8h et 16h.");
         }
@@ -142,7 +149,6 @@ public class StatusDemandeController {
         sd.setObservation(observation);
         statusDemandeService.save(sd);
 
-        // Mettre à jour le status de la demande
         demande.setStatus(status);
         demandeRepository.save(demande);
 
