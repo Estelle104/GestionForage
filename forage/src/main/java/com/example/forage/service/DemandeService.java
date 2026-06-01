@@ -86,6 +86,19 @@ public class DemandeService {
             d.setDateDemande(dateDemande);
         }
 
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTimeInMillis(d.getDateDemande().getTime());
+        int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
+        if (dayOfWeek == java.util.Calendar.SATURDAY || dayOfWeek == java.util.Calendar.SUNDAY) {
+            throw new IllegalArgumentException("La date doit être un jour ouvrable (lundi à vendredi).");
+        }
+
+        int hourOfDay = cal.get(java.util.Calendar.HOUR_OF_DAY);
+        int minute = cal.get(java.util.Calendar.MINUTE);
+        if (hourOfDay < 8 || hourOfDay > 16 || (hourOfDay == 16 && minute > 0)) {
+            throw new IllegalArgumentException("L'heure d'insertion doit être comprise entre 8h et 16h.");
+        }
+
         System.out.println("[DemandeService] save reference=" + reference
                 + " clientId=" + clientId
                 + " communeId=" + communeId

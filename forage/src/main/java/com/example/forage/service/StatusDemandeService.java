@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.example.forage.entity.StatusDemande;
+import com.example.forage.entity.Demande;
 import com.example.forage.repository.StatusDemandeRepository;
 
 @Service
@@ -28,5 +29,9 @@ public class StatusDemandeService {
 
     public StatusDemande findById(Integer id) {
         return statusDemandeRepository.findById(id).orElseThrow(() -> new RuntimeException("StatusDemande non trouvé"));
+    }
+
+    public List<StatusDemande> findByDemande(Demande demande) {
+        return statusDemandeRepository.findByDemande(demande);
     }
 }

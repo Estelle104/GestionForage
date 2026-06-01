@@ -160,7 +160,15 @@ public class StatusDemandeController {
         StatusDemande sd = statusDemandeService.findById(id);
         model.addAttribute("statusDemande", sd);
         model.addAttribute("demandes", demandeRepository.findAll());
-        model.addAttribute("statuses", statusRepository.findAll());
+        
+        // Seul les statuts déjà eu par la demande doivent être affichés
+        java.util.List<StatusDemande> history = statusDemandeService.findByDemande(sd.getDemande());
+        java.util.List<Status> listStatuses = history.stream()
+                .map(StatusDemande::getStatus)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
+        
+        model.addAttribute("statuses", listStatuses);
         return "status_demande/form";
     }
 
@@ -173,6 +181,14 @@ public class StatusDemandeController {
         StatusDemande sd = statusDemandeService.findById(id);
         Demande demande = demandeRepository.findById(demandeId).orElseThrow();
         Status status = statusRepository.findById(statusId).orElseThrow();
+
+        // Valider que le statut choisi fait partie de l'historique des statuts de la demande
+        java.util.List<StatusDemande> history = statusDemandeService.findByDemande(demande);
+        boolean existsInHistory = history.stream()
+                .anyMatch(h -> h.getStatus().getId().equals(statusId));
+        if (!existsInHistory) {
+            throw new IllegalArgumentException("Le statut choisi n'a jamais été associé à cette demande.");
+        }
 
         sd.setDemande(demande);
         sd.setStatus(status);
