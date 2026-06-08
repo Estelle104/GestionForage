@@ -43,17 +43,17 @@ public class DevisService {
     private final DemandeRepository demandeRepo;
     private final TypeRepository typeRepo;
     private final StatusRepository statusRepo;
-    private final StatusDemandeRepository statusDemandeRepo;
+    private final StatusDemandeService statusDemandeService;
 
     public DevisService(DevisRepository devisRepo, DetailsDevisRepository detailsRepo,
             DemandeRepository demandeRepo, TypeRepository typeRepo, StatusRepository statusRepo,
-            StatusDemandeRepository statusDemandeRepo) {
+            StatusDemandeService statusDemandeService) {
         this.devisRepo = devisRepo;
         this.detailsRepo = detailsRepo;
         this.demandeRepo = demandeRepo;
         this.typeRepo = typeRepo;
         this.statusRepo = statusRepo;
-        this.statusDemandeRepo = statusDemandeRepo;
+        this.statusDemandeService = statusDemandeService;
     }
 
     public List<Devis> findAll() {
@@ -142,7 +142,7 @@ public class DevisService {
         statusDemande.setDemande(demande);
         statusDemande.setStatus(status);
         statusDemande.setDateStatus(new Timestamp(System.currentTimeMillis()));
-        statusDemandeRepo.save(statusDemande);
+        statusDemandeService.save(statusDemande);
 
         return devis;
     }

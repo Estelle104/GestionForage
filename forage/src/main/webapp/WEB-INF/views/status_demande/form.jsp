@@ -195,5 +195,84 @@
             <a href="${pageContext.request.contextPath}/status-demandes" class="btn btn-cancel">Annuler</a>
         </form>
     </div>
+
+    <c:if test="${statusDemande != null}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const contextPath = "${pageContext.request.contextPath}";
+            const demandeSelect = document.getElementById("demandeId");
+            const statusSelect = document.getElementById("statusId");
+            const dateInput = document.getElementById("dateStatus");
+            const observationTextarea = document.getElementById("observation");
+            const formElement = document.querySelector("form");
+
+            let initialStatusId = "${statusDemande != null ? statusDemande.status.id : ''}";
+
+            function loadStatuses(demandeId, selectedStatusId) {
+                if (!demandeId) {
+                    statusSelect.innerHTML = '<option value="">-- Sélectionner un statut --</option>';
+                    return;
+                }
+
+                fetch(contextPath + "/status-demandes/ajax/demande/" + demandeId + "/statuses")
+                    .then(response => {
+                        if (!response.ok) throw new Error("Erreur lors de la récupération des statuts");
+                        return response.json();
+                    })
+                    .then(statuses => {
+                        statusSelect.innerHTML = '<option value="">-- Sélectionner un statut --</option>';
+                        statuses.forEach(status => {
+                            const option = document.createElement("option");
+                            option.value = status.id;
+                            option.textContent = status.libele;
+                            if (selectedStatusId && status.id == selectedStatusId) {
+                                option.selected = true;
+                            }
+                            statusSelect.appendChild(option);
+                        });
+
+                        if (statusSelect.value) {
+                            loadStatusDetails(demandeId, statusSelect.value);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
+
+            function loadStatusDetails(demandeId, statusId) {
+                if (!demandeId || !statusId) return;
+
+                fetch(contextPath + "/status-demandes/ajax/demande/" + demandeId + "/status/" + statusId)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Erreur lors de la récupération du détail");
+                        return response.json();
+                    })
+                    .then(details => {
+                        if (details.dateStatus) {
+                            dateInput.value = details.dateStatus;
+                        }
+                        observationTextarea.value = details.observation || '';
+                        formElement.action = contextPath + "/status-demandes/edit/" + details.statusDemandeId;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
+
+            demandeSelect.addEventListener("change", function() {
+                loadStatuses(this.value, null);
+            });
+
+            statusSelect.addEventListener("change", function() {
+                loadStatusDetails(demandeSelect.value, this.value);
+            });
+
+            if (demandeSelect.value) {
+                loadStatuses(demandeSelect.value, initialStatusId);
+            }
+        });
+    </script>
+    </c:if>
 </body>
 </html>

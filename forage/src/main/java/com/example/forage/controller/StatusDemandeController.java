@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 
 import com.example.forage.entity.Demande;
@@ -52,45 +55,27 @@ public class StatusDemandeController {
             return c;
         });
 
-        Map<Integer, Long> lastDate = new HashMap<>();
-        Map<Integer, Long> duree = new HashMap<>();
-        long maxDuree = 1;
-
+        double maxDuree = 1.0;
         for (StatusDemande sd : list) {
-            Integer demandeId = sd.getDemande().getId();
-            long current = sd.getDateStatus().getTime();
-            
-            if (lastDate.containsKey(demandeId)) {
-                long prev = lastDate.get(demandeId);
-                long diff = current - prev;
-                duree.put(sd.getId(), diff);
-                if (diff > maxDuree) {
-                    maxDuree = diff;
-                }
-            } else {
-                duree.put(sd.getId(), 0L);
+            Double dt = sd.getDureeTravail();
+            if (dt != null && dt > maxDuree) {
+                maxDuree = dt;
             }
-            lastDate.put(demandeId, current);
         }
 
         Map<Integer, String> dureeMap = new HashMap<>();
         Map<Integer, String> colorMap = new HashMap<>();
 
         for (StatusDemande sd : list) {
-            long diff = duree.get(sd.getId());
-            if (diff == 0) {
+            Double dt = sd.getDureeTravail();
+            if (dt == null || dt <= 0.0) {
                 dureeMap.put(sd.getId(), "-");
                 colorMap.put(sd.getId(), "transparent");
             } else {
-                long diffHours = diff / (60 * 60 * 1000);
-                long diffDays = diffHours / 24;
-                long remHours = diffHours % 24;
-                String dStr = "";
-                if (diffDays > 0) dStr += diffDays + "j ";
-                dStr += remHours + "h";
+                String dStr = String.format(Locale.US, "%.2f min", dt);
                 dureeMap.put(sd.getId(), dStr);
                 
-                double intensity = (double) diff / maxDuree;
+                double intensity = dt / maxDuree;
                 intensity = 0.1 + (0.9 * intensity); // from 0.1 to 1.0
                 colorMap.put(sd.getId(), "rgba(255, 0, 0, " + String.format(Locale.US, "%.2f", intensity) + ")");
             }
@@ -208,5 +193,60 @@ public class StatusDemandeController {
         demandeRepository.save(demande);
 
         return "redirect:/status-demandes";
+    }
+
+    @GetMapping("/ajax/demande/{demandeId}/statuses")
+    @ResponseBody
+    public ResponseEntity<?> getStatusesForDemande(@PathVariable Integer demandeId) {
+        try {
+            Demande demande = demandeRepository.findById(demandeId).orElse(null);
+            if (demande == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Demande non trouvée"));
+            }
+            List<StatusDemande> history = statusDemandeService.findByDemande(demande);
+            Map<Integer, String> statusMap = new java.util.LinkedHashMap<>();
+            for (StatusDemande sd : history) {
+                statusMap.put(sd.getStatus().getId(), sd.getStatus().getLibele());
+            }
+            List<Map<String, Object>> statuses = new java.util.ArrayList<>();
+            for (Map.Entry<Integer, String> entry : statusMap.entrySet()) {
+                statuses.add(Map.of("id", entry.getKey(), "libele", entry.getValue()));
+            }
+            return ResponseEntity.ok(statuses);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/ajax/demande/{demandeId}/status/{statusId}")
+    @ResponseBody
+    public ResponseEntity<?> getStatusDetails(@PathVariable Integer demandeId, @PathVariable Integer statusId) {
+        try {
+            Demande demande = demandeRepository.findById(demandeId).orElse(null);
+            if (demande == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Demande non trouvée"));
+            }
+            List<StatusDemande> history = statusDemandeService.findByDemande(demande);
+            StatusDemande match = history.stream()
+                .filter(sd -> sd.getStatus().getId().equals(statusId))
+                .findFirst()
+                .orElse(null);
+            if (match == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Statut non trouvé dans l'historique"));
+            }
+            
+            String dateStr = "";
+            if (match.getDateStatus() != null) {
+                dateStr = match.getDateStatus().toLocalDateTime().toString().substring(0, 16);
+            }
+            
+            return ResponseEntity.ok(Map.of(
+                "statusDemandeId", match.getId(),
+                "dateStatus", dateStr,
+                "observation", match.getObservation() != null ? match.getObservation() : ""
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
     }
 }

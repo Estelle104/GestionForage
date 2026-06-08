@@ -141,21 +141,6 @@ INSERT INTO client (nom, email, telephone) VALUES
 ('Rabe Marie', 'rabe.marie@yahoo.fr', '+261 33 98 765 43'),
 ('Randria Paul', 'randria.paul@outlook.com', '+261 38 45 678 90'),
 ('Rasoa Hanta', 'rasoa.hanta@gmail.com', '+261 34 56 789 01'),
-('Rakotondrabe Luc', 'rakotondrabe.luc@gmail.com', '+261 33 23 456 78'),
-('Rajaonarison Nivo', 'rajaonarison.nivo@yahoo.fr', '+261 38 67 890 12'),
-('Ramiandrisoa Soa', 'ramiandrisoa.soa@gmail.com', '+261 34 78 901 23'),
-('Andriantsoa Eric', 'andriantsoa.eric@outlook.com', '+261 33 34 567 89'),
-('Randriamanana Clotilde', 'randriamanana.clotilde@gmail.com', '+261 38 89 012 34'),
-('Rasoamanarivo Fanja', 'rasoamanarivo.fanja@gmail.com', '+261 34 90 123 45'),
-('Rakotoarisoa Tiana', 'rakotoarisoa.tiana@yahoo.fr', '+261 33 01 234 56'),
-('Ratsimbazafy Herizo', 'ratsimbazafy.herizo@gmail.com', '+261 38 12 345 67'),
-('Ramanantsoa Vonjy', 'ramanantsoa.vonjy@outlook.com', '+261 34 23 456 78'),
-('Andriamaharo Sylvie', 'andriamaharo.sylvie@gmail.com', '+261 33 45 678 90'),
-('Razafindrakoto Jules', 'razafindrakoto.jules@gmail.com', '+261 38 56 789 01'),
-('Rakotondravony Annie', 'rakotondravony.annie@yahoo.fr', '+261 34 67 890 12'),
-('Rabemananjara Fidy', 'rabemananjara.fidy@gmail.com', '+261 33 78 901 23'),
-('Andrianjafy Mamy', 'andrianjafy.mamy@outlook.com', '+261 38 90 123 45'),
-('Rasolofonaivo Brice', 'rasolofonaivo.brice@gmail.com', '+261 34 01 234 56'),
 ('Rakotoniaina Lala', 'rakotoniaina.lala@gmail.com', '+261 33 12 345 67');
 
 

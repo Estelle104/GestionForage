@@ -25,16 +25,16 @@ public class DemandeService {
     private final ClientRepository clientRepo;
     private final CommuneRepository communeRepo;
     private final StatusRepository statusRepo;
-    private final StatusDemandeRepository statusDemandeRepo;
+    private final StatusDemandeService statusDemandeService;
 
     public DemandeService(DemandeRepository repo, ClientRepository clientRepo, CommuneRepository communeRepo,
             StatusRepository statusRepo,
-            StatusDemandeRepository statusDemandeRepo) {
+            StatusDemandeService statusDemandeService) {
         this.repo = repo;
         this.clientRepo = clientRepo;
         this.communeRepo = communeRepo;
         this.statusRepo = statusRepo;
-        this.statusDemandeRepo = statusDemandeRepo;
+        this.statusDemandeService = statusDemandeService;
     }
 
     public void save(Demande d) {
@@ -112,7 +112,7 @@ public class DemandeService {
         sm.setStatus(status);
         sm.setDateStatus(d.getDateDemande());
 
-        statusDemandeRepo.save(sm);
+        statusDemandeService.save(sm);
     }
 
 }

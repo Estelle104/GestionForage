@@ -32,6 +32,8 @@ public class StatusDemande {
 
     private String observation;
 
+    private Double duree_travail;
+
     public StatusDemande(Demande demande, Status status, Timestamp date_status, String observation) {
         this.demande = demande;
         this.status = status;
@@ -95,5 +97,13 @@ public class StatusDemande {
 
     public void setDateStatus(Timestamp dateStatus) {
         this.date_status = dateStatus;
+    }
+
+    public Double getDureeTravail() {
+        return duree_travail;
+    }
+
+    public void setDureeTravail(Double dureeTravail) {
+        this.duree_travail = dureeTravail;
     }
 }

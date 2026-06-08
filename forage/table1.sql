@@ -127,7 +127,6 @@ CREATE TABLE devis(
         REFERENCES type(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
-    
 );
 
 CREATE TABLE details_devis(

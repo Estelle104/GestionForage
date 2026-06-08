@@ -197,8 +197,6 @@ Statut
 
 
 
-
-
 Modif
 demande azo ovaina
 
@@ -211,34 +209,34 @@ Statut
 
 
 
- =============================================================
+ ===========================================================
 
- Suite 
+Suite 
 
- ao anaty demandeStatus lasa miampy colonne ray oe DureeTravaillee [OK]
- lister les demandeStatus par ordre croissant [OK]
- lister les demandeStatus par demande dans l'ordre croissant [OK]
+ao anaty demandeStatus lasa miampy colonne ray oe DureeTravaillee [OK]
+lister les demandeStatus par ordre croissant [OK]
+lister les demandeStatus par demande dans l'ordre croissant [OK]
 
- io D.T io calculena en minutes [OK]
+io D.T io calculena en minutes [OK]
 
- duree en minutes entre 2 status [OK]
+duree en minutes entre 2 status [OK]
 
- de ny fanaovana calcul:
+de ny fanaovana calcul:
 
- jour ouvrable ihany no raisina anaovana calcul (weekend tsy raisina) [OK]
- de ny ora fiasana: 08h->16h [OK]
+jour ouvrable ihany no raisina anaovana calcul (weekend tsy raisina) [OK]
+de ny ora fiasana: 08h->16h [OK]
 
- antsoina le fonction namboarina teo rehefa manao ajout demandeStatus vaovao, modification demandeStatus [OK]
- , ajout demande [OK]
- , modif demande [OK]
- , ajout devis [OK]
- , modif devis [OK]
+antsoina le fonction namboarina teo rehefa manao ajout demandeStatus vaovao, modification demandeStatus [OK]
+, ajout demande [OK]
+, modif demande [OK]
+, ajout devis [OK]
+, modif devis [OK]
+
 
 update status set libelle = 'Devis Etude Cree' where libelle = 'Devis cree';
 
 insert into status (libelle) values ('Devis Etude Accepte');
 insert into status (libelle) values ('Devis Etude Refuse');
-
 insert into status (libelle) values ('Devis Forage Cree');
 insert into status (libelle) values ('Devis Forage Accepte');
 insert into status (libelle) values ('Devis Forage Refuse');
@@ -264,8 +262,7 @@ Manamboatra api mande iray maka ny liste Demande misy alerte de triena
 atao sur php
 
 
-
-------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 Manamboatra script de Reinitialisation 
 

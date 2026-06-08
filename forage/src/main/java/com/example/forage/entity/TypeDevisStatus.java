@@ -2,8 +2,8 @@ package com.example.forage.entity;
 
 
 public enum TypeDevisStatus {
-    FORAGE(1, 6, "DEVIS_FORAGE_CREE"),
-    ETUDE(2, 7, "DEVIS_ETUDE_CREE");
+    FORAGE(1, 5, "DEVIS_FORAGE_CREE"),
+    ETUDE(2, 2, "DEVIS_ETUDE_CREE");
 
     private final Integer typeId;
     private final Integer statusId;
