@@ -181,3 +181,93 @@ IL y aura 2 interface :
     - Date
     - Observation
     - Status ( liste deroulante )
+
+
+## Explication Aaron
+interface 
+
+Date ajout status
+
+demande
+ajax maka ny info momba anle demande
+
+date : null = date jour avec minutes
+Observation
+Statut 
+
+
+
+
+
+Modif
+demande azo ovaina
+
+date 
+
+observation
+
+Statut
+ liste deroulante ny Statut mifanaraka amle demande
+
+
+
+ =============================================================
+
+ Suite 
+
+ ao anaty demandeStatus lasa miampy colonne ray oe DureeTravaillee [OK]
+ lister les demandeStatus par ordre croissant [OK]
+ lister les demandeStatus par demande dans l'ordre croissant [OK]
+
+ io D.T io calculena en minutes [OK]
+
+ duree en minutes entre 2 status [OK]
+
+ de ny fanaovana calcul:
+
+ jour ouvrable ihany no raisina anaovana calcul (weekend tsy raisina) [OK]
+ de ny ora fiasana: 08h->16h [OK]
+
+ antsoina le fonction namboarina teo rehefa manao ajout demandeStatus vaovao, modification demandeStatus [OK]
+ , ajout demande [OK]
+ , modif demande [OK]
+ , ajout devis [OK]
+ , modif devis [OK]
+
+update status set libelle = 'Devis Etude Cree' where libelle = 'Devis cree';
+
+insert into status (libelle) values ('Devis Etude Accepte');
+insert into status (libelle) values ('Devis Etude Refuse');
+
+insert into status (libelle) values ('Devis Forage Cree');
+insert into status (libelle) values ('Devis Forage Accepte');
+insert into status (libelle) values ('Devis Forage Refuse');
+
+
+manamboatra table Parametre [OK]
+id_Status1
+id_Status2
+duree en minutes
+Alerte
+
+Modele [OK]
+
+Repository [OK]
+
+Service [WIP]
+
+Ny zavatra affichena zany: liste demande misy Alerte [WIP]
+
+
+Manamboatra api mande iray maka ny liste Demande misy alerte de triena 
+
+atao sur php
+
+
+
+------------------------------------------------------------------------------------------------
+
+Manamboatra script de Reinitialisation 
+
+
+Le couleur amle alerte atao hex de amzay afaka lokoina par rapport anzay le alerte

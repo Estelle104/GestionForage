@@ -94,6 +94,7 @@ CREATE TABLE status_demande (
     id_demande INTEGER NOT NULL,
     id_status INTEGER NOT NULL,
     date_status TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    duree_travail DECIMAL(10,2) DEFAULT 0.00, -- en minutes
 
     CONSTRAINT fk_status_demande_demande
         FOREIGN KEY (id_demande)
@@ -143,4 +144,11 @@ CREATE TABLE details_devis(
         REFERENCES devis(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
+);
+
+CREATE TABLE parametre(
+    id_status1 INT NOT NULL,
+    id_status2 INT NOT NULL,   
+    duree_minute DECIMAL(10,2) NOT NULL,
+    alerte INT -- 
 );
