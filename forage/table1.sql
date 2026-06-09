@@ -149,5 +149,16 @@ CREATE TABLE parametre(
     id_status1 INT NOT NULL,
     id_status2 INT NOT NULL,   
     duree_minute DECIMAL(10,2) NOT NULL,
-    alerte INT -- 
+    alerte INT,
+    PRIMARY KEY (id_status1, id_status2),
+    CONSTRAINT fk_parametre_status1
+        FOREIGN KEY (id_status1)
+        REFERENCES status(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_parametre_status2
+        FOREIGN KEY (id_status2)
+        REFERENCES status(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );

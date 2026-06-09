@@ -20,12 +20,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 
+import com.example.forage.dto.StatusDemandeWithAlerteDTO;
 import com.example.forage.entity.Demande;
 import com.example.forage.entity.Status;
 import com.example.forage.entity.StatusDemande;
 import com.example.forage.repository.DemandeRepository;
 import com.example.forage.repository.StatusRepository;
 import com.example.forage.service.StatusDemandeService;
+import com.example.forage.service.AlerteService;
 
 @Controller
 @RequestMapping("/status-demandes")
@@ -34,56 +36,52 @@ public class StatusDemandeController {
     private final StatusDemandeService statusDemandeService;
     private final DemandeRepository demandeRepository;
     private final StatusRepository statusRepository;
+    private final AlerteService alerteService;
 
     public StatusDemandeController(StatusDemandeService statusDemandeService,
             DemandeRepository demandeRepository,
-            StatusRepository statusRepository) {
+            StatusRepository statusRepository,
+            AlerteService alerteService) {
         this.statusDemandeService = statusDemandeService;
         this.demandeRepository = demandeRepository;
         this.statusRepository = statusRepository;
+        this.alerteService = alerteService;
     }
 
     @GetMapping
     public String list(Model model) {
-        List<StatusDemande> list = statusDemandeService.findAll();
-        
-        list.sort((a, b) -> {
-            int c = a.getDemande().getId().compareTo(b.getDemande().getId());
-            if (c == 0) {
-                return a.getDateStatus().compareTo(b.getDateStatus());
-            }
-            return c;
-        });
+        List<Demande> demandes = demandeRepository.findAll();
+        Map<Integer, List<StatusDemandeWithAlerteDTO>> statusParDemande = new HashMap<>();
 
-        double maxDuree = 1.0;
-        for (StatusDemande sd : list) {
-            Double dt = sd.getDureeTravail();
-            if (dt != null && dt > maxDuree) {
-                maxDuree = dt;
-            }
-        }
+        System.out.println("=== DEBUG LIST CONTROLLER ===");
+        System.out.println("Nombre de demandes: " + demandes.size());
 
-        Map<Integer, String> dureeMap = new HashMap<>();
-        Map<Integer, String> colorMap = new HashMap<>();
-
-        for (StatusDemande sd : list) {
-            Double dt = sd.getDureeTravail();
-            if (dt == null || dt <= 0.0) {
-                dureeMap.put(sd.getId(), "-");
-                colorMap.put(sd.getId(), "transparent");
-            } else {
-                String dStr = String.format(Locale.US, "%.2f min", dt);
-                dureeMap.put(sd.getId(), dStr);
+        // Pour chaque demande, récupérer les statuts avec les alertes
+        for (Demande demande : demandes) {
+            try {
+                System.out.println("Traitement demande ID: " + demande.getId() + " - " + demande.getReference());
+                List<StatusDemandeWithAlerteDTO> statusesWithAlertes = alerteService.getStatusDemandeWithAlertes(demande);
+                System.out.println("  → Nombre de statuts retournés: " + statusesWithAlertes.size());
                 
-                double intensity = dt / maxDuree;
-                intensity = 0.1 + (0.9 * intensity); // from 0.1 to 1.0
-                colorMap.put(sd.getId(), "rgba(255, 0, 0, " + String.format(Locale.US, "%.2f", intensity) + ")");
+                for (int i = 0; i < statusesWithAlertes.size(); i++) {
+                    System.out.println("    Statut " + (i+1) + ": " + statusesWithAlertes.get(i).getStatusLibele() + 
+                                     " | Alertes: " + statusesWithAlertes.get(i).getAlertes().size());
+                }
+                
+                if (!statusesWithAlertes.isEmpty()) {
+                    statusParDemande.put(demande.getId(), statusesWithAlertes);
+                }
+            } catch (Exception e) {
+                System.err.println("ERREUR pour demande " + demande.getId() + ": " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
-        model.addAttribute("statusDemandes", list);
-        model.addAttribute("dureeMap", dureeMap);
-        model.addAttribute("colorMap", colorMap);
+        System.out.println("Total demandes avec statuts: " + statusParDemande.size());
+        System.out.println("=== FIN DEBUG ===\n");
+
+        model.addAttribute("demandes", demandes);
+        model.addAttribute("statusParDemande", statusParDemande);
         return "status_demande/list";
     }
 
