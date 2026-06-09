@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# set -euo pipefail
 
 # deploy_and_run.sh - compile, deploy WAR to local Tomcat and start it
 # Usage: ./deploy_and_run.sh [TOMCAT_HOME]
