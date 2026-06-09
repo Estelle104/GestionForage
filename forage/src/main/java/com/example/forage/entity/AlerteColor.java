@@ -2,13 +2,14 @@ package com.example.forage.entity;
 
 public enum AlerteColor {
     // 7 Alertes pour les 7 transitions de statuts
-    ALERTE_1(1, 2, "#FFE5E5", "Demande créée → Devis Étude créé"),
-    ALERTE_2(2, 3, "#FFCCCC", "Devis Étude créé → Devis Étude accepté"),
-    ALERTE_3(3, 4, "#FFB3B3", "Devis Étude accepté → Devis Étude refusé"),
-    ALERTE_4(4, 5, "#FF9999", "Devis Étude refusé → Devis Forage créé"),
-    ALERTE_5(5, 6, "#FF8080", "Devis Forage créé → Devis Forage accepté"),
-    ALERTE_6(6, 7, "#FF6666", "Devis Forage accepté → Devis Forage refusé"),
-    ALERTE_7(7, 8, "#FF4D4D", "Devis Forage refusé → Demande terminée");
+    ALERTE_1(1, 2, "#FFE69C", "Demande créée → Devis Étude créé"),
+    ALERTE_2(2, 3, "#FFB3B3", "Devis Étude créé → Devis Étude accepté"),
+    ALERTE_3(3, 4, "#FFDA6A", "Devis Étude accepté → Devis Étude refusé"),
+    ALERTE_4(4, 5, "#FF6666", "Devis Étude refusé → Devis Forage créé"),
+    ALERTE_5(5, 6, "#FFC107", "Devis Forage créé → Devis Forage accepté"),
+    ALERTE_6(6, 7, "#DC3545", "Devis Forage accepté → Devis Forage refusé"),
+    ALERTE_7(7, 8, "#7A0019", "Devis Forage refusé → Demande terminée");
+
 
     private final Integer idStatus1;
     private final Integer idStatus2;

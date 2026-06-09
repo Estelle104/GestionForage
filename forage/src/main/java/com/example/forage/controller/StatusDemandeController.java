@@ -53,20 +53,20 @@ public class StatusDemandeController {
         List<Demande> demandes = demandeRepository.findAll();
         Map<Integer, List<StatusDemandeWithAlerteDTO>> statusParDemande = new HashMap<>();
 
-        System.out.println("=== DEBUG LIST CONTROLLER ===");
-        System.out.println("Nombre de demandes: " + demandes.size());
+        // System.out.println("=== DEBUG LIST CONTROLLER ===");
+        // System.out.println("Nombre de demandes: " + demandes.size());
 
         // Pour chaque demande, récupérer les statuts avec les alertes
         for (Demande demande : demandes) {
             try {
-                System.out.println("Traitement demande ID: " + demande.getId() + " - " + demande.getReference());
+                // System.out.println("Traitement demande ID: " + demande.getId() + " - " + demande.getReference());
                 List<StatusDemandeWithAlerteDTO> statusesWithAlertes = alerteService.getStatusDemandeWithAlertes(demande);
-                System.out.println("  → Nombre de statuts retournés: " + statusesWithAlertes.size());
+                // System.out.println("  → Nombre de statuts retournés: " + statusesWithAlertes.size());
                 
-                for (int i = 0; i < statusesWithAlertes.size(); i++) {
-                    System.out.println("    Statut " + (i+1) + ": " + statusesWithAlertes.get(i).getStatusLibele() + 
-                                     " | Alertes: " + statusesWithAlertes.get(i).getAlertes().size());
-                }
+                // for (int i = 0; i < statusesWithAlertes.size(); i++) {
+                //     // System.out.println("    Statut " + (i+1) + ": " + statusesWithAlertes.get(i).getStatusLibele() + 
+                //                     // " | Alertes: " + statusesWithAlertes.get(i).getAlertes().size());
+                // }
                 
                 if (!statusesWithAlertes.isEmpty()) {
                     statusParDemande.put(demande.getId(), statusesWithAlertes);
@@ -77,8 +77,8 @@ public class StatusDemandeController {
             }
         }
 
-        System.out.println("Total demandes avec statuts: " + statusParDemande.size());
-        System.out.println("=== FIN DEBUG ===\n");
+        // System.out.println("Total demandes avec statuts: " + statusParDemande.size());
+        // System.out.println("=== FIN DEBUG ===\n");
 
         model.addAttribute("demandes", demandes);
         model.addAttribute("statusParDemande", statusParDemande);
