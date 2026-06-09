@@ -35,11 +35,12 @@ public class RestDemandeController {
      * Filtrage par `status` (id ou libellé) et `alerte` (true/false).
      */
     @GetMapping("/demandes")
-    public ResponseEntity<?> list(
+        public ResponseEntity<?> list(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String alerte,
+            @RequestParam(required = false) String color,
             @RequestParam(required = false, defaultValue = "asc") String sort
-    ) {
+        ) {
         Sort.Direction dir = "desc".equalsIgnoreCase(sort) ? Sort.Direction.DESC : Sort.Direction.ASC;
         List<Demande> demandes = demandeRepository.findAll(Sort.by(dir, "dateDemande"));
 
@@ -56,6 +57,19 @@ public class RestDemandeController {
                             return false;
                         }
                     });
+
+            // if color filter provided, check if any alert matches the color
+            if (color != null && !color.isBlank()) {
+                String want = color.trim().toLowerCase();
+                if (want.startsWith("#")) want = want.substring(1);
+                boolean matchedColor = statuses.stream()
+                        .flatMap(s -> s.getAlertes() != null ? s.getAlertes().stream() : List.<com.example.forage.dto.AlerteDTO>of().stream())
+                        .map(a -> ((com.example.forage.dto.AlerteDTO) a).getCouleur())
+                        .filter(c -> c != null)
+                        .map(c -> c.replace("#", "").toLowerCase())
+                        .anyMatch(c -> c.equals(want));
+                if (!matchedColor) continue;
+            }
 
             // appliquer filtre status si fourni (compare id ou libellé)
             if (status != null && !status.isBlank()) {

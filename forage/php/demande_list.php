@@ -5,14 +5,16 @@
 // Récupérer paramètres de filtre depuis la requête GET
 $status = isset($_GET['status']) ? trim($_GET['status']) : '';
 $alerte = isset($_GET['alerte']) ? trim($_GET['alerte']) : '';
+$color = isset($_GET['color']) ? trim($_GET['color']) : '';
 $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'asc';
 
 $apiUrl = 'http://localhost:8080/forage/api/demandes';
 $params = [];
 if ($status !== '') $params['status'] = $status;
 if ($alerte !== '') $params['alerte'] = $alerte;
+if ($color !== '') $params['color'] = $color;
 if ($sort !== '') $params['sort'] = $sort;
-if (!empty($params)) $apiUrl .= '?' . http_build_query($params);
+if (!empty($params)) $apiUrl .= '?' . http_build_query($params);cv
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -102,27 +104,28 @@ function h($s) { return htmlspecialchars((string)$s); }
                             <?php endif; ?>
                         </td>
                         <td>
-                            <?php if (!empty($d['statuses'])): ?>
-                                <?php
-                                    $badges = [];
-                                    foreach ($d['statuses'] as $s) {
-                                        if (!empty($s['alertes'])) {
-                                            foreach ($s['alertes'] as $a) {
-                                                $active = !empty($a['isAlerte']);
-                                                $label = ($a['statusLabel'] ?? '') . ' (' . ($a['dureeActuelle'] ?? 0) . '/' . ($a['dureeMinute'] ?? 0) . 'min)';
-                                                $badges[] = ['label'=>$label,'active'=>$active];
-                                            }
-                                        }
-                                    }
-                                ?>
-                                <?php if (empty($badges)): ?>—<?php else: ?>
-                                    <?php foreach ($badges as $b): ?>
-                                        <span class="badge <?= $b['active'] ? 'badge-alerte' : 'badge-ok' ?>"><?=
-                                            h($b['label'])
-                                        ?></span>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            <?php else: ?>—<?php endif; ?>
+                                            <?php if (!empty($d['statuses'])): ?>
+                                                <?php
+                                                $badges = [];
+                                                foreach ($d['statuses'] as $s) {
+                                                    if (!empty($s['alertes'])) {
+                                                        foreach ($s['alertes'] as $a) {
+                                                            $active = !empty($a['isAlerte']);
+                                                            $label = ($a['statusLabel'] ?? '') . ' (' . ($a['dureeActuelle'] ?? 0) . '/' . ($a['dureeMinute'] ?? 0) . 'min)';
+                                                            $badges[] = ['label'=>$label,'active'=>$active,'couleur'=>($a['couleur'] ?? null)];
+                                                        }
+                                                    }
+                                                }
+                                                ?>
+                                                <?php if (empty($badges)): ?>—<?php else: ?>
+                                                    <?php foreach ($badges as $b): ?>
+                                                        <?php $bg = $b['couleur'] ?? ($b['active'] ? '#d9534f' : '#5cb85c'); $op = $b['active'] ? '1' : '0.6'; ?>
+                                                        <span class="badge" style="background:<?=h($bg)?>; color:#fff; opacity:<?=$op?>; border:1px solid rgba(0,0,0,0.08);">
+                                                            <?= h($b['label']) ?>
+                                                        </span>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            <?php else: ?>—<?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
