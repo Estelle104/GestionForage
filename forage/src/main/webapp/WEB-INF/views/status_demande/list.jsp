@@ -293,35 +293,30 @@
 
                                                                 <c:when test="${alerte.isAlerte}">
                                                                     <div class="alerte-badge alerte-active"
-                                                                    style="background-color:${alerte.couleur};
-                                                                    border-color:${alerte.couleur};"
-                                                                    title="${alerte.description}">
+                                                                         style="background-color:${alerte.couleur != null ? alerte.couleur : '#ff6666'}; 
+                                                                                border-color:${alerte.couleur != null ? alerte.couleur : '#ff6666'}; color:#ffffff;"
+                                                                         title="${alerte.description}">
+                                                                        ⚠ ${alerte.statusLabel}
+                                                                        <br/>
+                                                                        <span style="font-size:10px; color:rgba(255,255,255,0.95);">
+                                                                            ${alerte.dureeActuelle} / ${alerte.dureeMinute} min
+                                                                        </span>
+                                                                    </div>
+                                                                </c:when>
 
-                                                                    ⚠ ${alerte.statusLabel}
-
-                                                                    <br/>
-
-                                                                    <span style="font-size:10px;">
-                                                                        ${alerte.dureeActuelle} / ${alerte.dureeMinute} min
-                                                                    </span>
-
-                                                                </div>
-                                                            </c:when>
-
-                                                            <c:otherwise>
-                                                                <div class="alerte-badge alerte-badge-vert"
-                                                                title="${alerte.description}">
-
-                                                                ${alerte.statusLabel}
-
-                                                                <br/>
-
-                                                                <span style="font-size:10px;">
-                                                                    ${alerte.dureeActuelle} / ${alerte.dureeMinute} min
-                                                                </span>
-
-                                                            </div>
-                                                        </c:otherwise>
+                                                                <c:otherwise>
+                                                                    <div class="alerte-badge"
+                                                                         style="background-color:${alerte.couleur != null ? alerte.couleur : '#d4edda'}; 
+                                                                                border-color:${alerte.couleur != null ? alerte.couleur : '#c3e6cb'}; 
+                                                                                color:#222; opacity:0.55;"
+                                                                         title="${alerte.description}">
+                                                                        ${alerte.statusLabel}
+                                                                        <br/>
+                                                                        <span style="font-size:10px; color:rgba(0,0,0,0.8);">
+                                                                            ${alerte.dureeActuelle} / ${alerte.dureeMinute} min
+                                                                        </span>
+                                                                    </div>
+                                                                </c:otherwise>
 
                                                     </c:choose>
 

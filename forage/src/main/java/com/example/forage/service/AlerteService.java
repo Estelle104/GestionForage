@@ -125,6 +125,7 @@ public class AlerteService {
         AlerteColor alerteColor = AlerteColor.getAlerteByStatuses(status1.getId(), status2.getId());
         String couleur = alerteColor != null ? alerteColor.getHexColor() : "#999999";
         String description = alerteColor != null ? alerteColor.getDescription() : "Alerte";
+        System.out.println("[AlerteService] couleur pour transition " + status1.getLibele() + "->" + status2.getLibele() + " = " + couleur);
 
         AlerteDTO alerte = new AlerteDTO();
         alerte.setIdStatus1(status1.getId());
