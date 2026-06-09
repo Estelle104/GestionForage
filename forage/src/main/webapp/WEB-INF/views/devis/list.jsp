@@ -200,7 +200,7 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
+        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage - ETU004185</a>
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/demandes">Demandes</a></li>
             <li><a href="${pageContext.request.contextPath}/devis" class="active">Devis</a></li>

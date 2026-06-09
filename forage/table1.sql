@@ -145,20 +145,54 @@ CREATE TABLE details_devis(
         ON UPDATE CASCADE
 );
 
-CREATE TABLE parametre(
-    id_status1 INT NOT NULL,
-    id_status2 INT NOT NULL,   
-    duree_minute DECIMAL(10,2) NOT NULL,
-    alerte INT,
+-- CREATE TABLE parametre(
+--     id_status1 INT NOT NULL,
+--     id_status2 INT NOT NULL,   
+--     duree_minute DECIMAL(10,2) NOT NULL,
+--     alerte INT,
+--     PRIMARY KEY (id_status1, id_status2),
+--     CONSTRAINT fk_parametre_status1
+--         FOREIGN KEY (id_status1)
+--         REFERENCES status(id)
+--         ON DELETE RESTRICT
+--         ON UPDATE CASCADE,
+--     CONSTRAINT fk_parametre_status2
+--         FOREIGN KEY (id_status2)
+--         REFERENCES status(id)
+--         ON DELETE RESTRICT
+--         ON UPDATE CASCADE
+-- );
+
+CREATE TABLE parametre (
+    id_status1    INT            NOT NULL,
+    id_status2    INT            NOT NULL,
+    debut_minute  DECIMAL(10,2)  NOT NULL,
+    fin_minute    DECIMAL(10,2)  NOT NULL,
+    alerte        INT,
+
     PRIMARY KEY (id_status1, id_status2),
+
     CONSTRAINT fk_parametre_status1
-        FOREIGN KEY (id_status1)
-        REFERENCES status(id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
+        FOREIGN KEY (id_status1) REFERENCES status(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+
     CONSTRAINT fk_parametre_status2
-        FOREIGN KEY (id_status2)
-        REFERENCES status(id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
+        FOREIGN KEY (id_status2) REFERENCES status(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    CONSTRAINT chk_intervalle
+        CHECK (fin_minute > debut_minute)
 );
+
+-- 1. Supprimer l'ancienne clé primaire
+ALTER TABLE parametre DROP CONSTRAINT parametre_pkey;
+
+-- 2. Ajouter une colonne id auto-incrémentée
+ALTER TABLE parametre ADD COLUMN id SERIAL;
+
+-- 3. Définir la nouvelle clé primaire sur id
+ALTER TABLE parametre ADD CONSTRAINT parametre_pkey PRIMARY KEY (id);
+
+-- 4. Ajouter un index unique pour éviter les doublons d'intervalles identiques
+CREATE UNIQUE INDEX uq_parametre_intervalle 
+ON parametre (id_status1, id_status2, debut_minute, fin_minute);

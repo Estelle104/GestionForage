@@ -4,22 +4,35 @@ public class AlerteDTO {
     private Integer idStatus1;
     private Integer idStatus2;
     private String statusLabel;
-    private Double dureeMinute;
+    // private Double dureeMinute;
+    private Double debutMinute;
+    private Double finMinute;
     private Double dureeActuelle;
     private Boolean isAlerte;
     private String couleur;
     private String description;
+    private Integer niveauAlerte;
+
+    public Integer getNiveauAlerte() {
+        return niveauAlerte;
+    }
+
+    public void setNiveauAlerte(Integer niveauAlerte) {
+        this.niveauAlerte = niveauAlerte;
+    }
 
     public AlerteDTO() {
     }
 
     public AlerteDTO(Integer idStatus1, Integer idStatus2, String statusLabel,
-                     Double dureeMinute, Double dureeActuelle, Boolean isAlerte,
-                     String couleur, String description) {
+            Double debutMinute, Double finMinute, Double dureeActuelle, Boolean isAlerte,
+            String couleur, String description) {
         this.idStatus1 = idStatus1;
         this.idStatus2 = idStatus2;
         this.statusLabel = statusLabel;
-        this.dureeMinute = dureeMinute;
+        // this.dureeMinute = dureeMinute;
+        this.debutMinute = debutMinute;
+        this.finMinute = finMinute;
         this.dureeActuelle = dureeActuelle;
         this.isAlerte = isAlerte;
         this.couleur = couleur;
@@ -48,14 +61,6 @@ public class AlerteDTO {
 
     public void setStatusLabel(String statusLabel) {
         this.statusLabel = statusLabel;
-    }
-
-    public Double getDureeMinute() {
-        return dureeMinute;
-    }
-
-    public void setDureeMinute(Double dureeMinute) {
-        this.dureeMinute = dureeMinute;
     }
 
     public Double getDureeActuelle() {
@@ -88,5 +93,21 @@ public class AlerteDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getDebutMinute() {
+        return debutMinute;
+    }
+
+    public void setDebutMinute(Double debutMinute) {
+        this.debutMinute = debutMinute;
+    }
+
+    public Double getFinMinute() {
+        return finMinute;
+    }
+
+    public void setFinMinute(Double finMinute) {
+        this.finMinute = finMinute;
     }
 }

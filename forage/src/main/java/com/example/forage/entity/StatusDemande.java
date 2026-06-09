@@ -2,6 +2,7 @@ package com.example.forage.entity;
 
 import java.sql.Timestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,10 @@ public class StatusDemande {
 
     private String observation;
 
+    @Column(name = "duree_travail")
     private Double duree_travail;
+
+    
 
     public StatusDemande(Demande demande, Status status, Timestamp date_status, String observation) {
         this.demande = demande;

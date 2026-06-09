@@ -1,6 +1,8 @@
 package com.example.forage.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -37,12 +41,21 @@ public class Demande {
     @Column(name = "date_demande", nullable = false)
     private Timestamp dateDemande;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "demande")
+    @OrderBy("date_status DESC")
+    private List<StatusDemande> statusHistorique;
 
+    public List<StatusDemande> getStatusHistorique() {
+        return statusHistorique;
+    }
+
+    public void setStatusHistorique(List<StatusDemande> statusHistorique) {
+        this.statusHistorique = statusHistorique;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
-
 
     public Demande() {
     }
@@ -97,8 +110,6 @@ public class Demande {
     public void setDateDemande(Timestamp dateDemande) {
         this.dateDemande = dateDemande;
     }
-
-
 
     public Status getStatus() {
         return status;

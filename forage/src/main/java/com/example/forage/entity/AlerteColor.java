@@ -1,15 +1,23 @@
 package com.example.forage.entity;
 
 public enum AlerteColor {
-    // 7 Alertes pour les 7 transitions de statuts
-    ALERTE_1(1, 2, "#FFE69C", "Demande créée → Devis Étude créé"),
-    ALERTE_2(2, 3, "#FFB3B3", "Devis Étude créé → Devis Étude accepté"),
-    ALERTE_3(3, 4, "#FFDA6A", "Devis Étude accepté → Devis Étude refusé"),
-    ALERTE_4(4, 5, "#FF6666", "Devis Étude refusé → Devis Forage créé"),
-    ALERTE_5(5, 6, "#FFC107", "Devis Forage créé → Devis Forage accepté"),
-    ALERTE_6(6, 7, "#DC3545", "Devis Forage accepté → Devis Forage refusé"),
-    ALERTE_7(7, 8, "#7A0019", "Devis Forage refusé → Demande terminée");
+    ALERTE_1_1(1, 2, "#d9ff00", "Demande créée → Devis Étude créé (niveau 1)"),
+    ALERTE_1_2(1, 2, "#dc0e0e", "Demande créée → Devis Étude créé (niveau 2)"),
 
+    ALERTE_2_1(2, 3, "#d9ff00", "Devis Étude créé → Devis Étude accepté (niveau 1)"),
+    ALERTE_2_2(2, 3, "#dc0e0e", "Devis Étude créé → Devis Étude accepté (niveau 2)"),
+
+    ALERTE_3_1(3, 4, "#d9ff00", "Devis Étude accepté → Devis Forage créé (niveau 1)"),
+    ALERTE_3_2(3, 4, "#dc0e0e", "Devis Étude accepté → Devis Forage créé (niveau 2)"),
+
+    ALERTE_4_1(4, 5, "#d9ff00", "Devis Forage créé → Devis Forage accepté (niveau 1)"),
+    ALERTE_4_2(4, 5, "#dc0e0e", "Devis Forage créé → Devis Forage accepté (niveau 2)"),
+
+    ALERTE_5_1(5, 6, "#d9ff00", "Devis Forage accepté → Forage commencée (niveau 1)"),
+    ALERTE_5_2(5, 6, "#dc0e0e", "Devis Forage accepté → Forage commencée (niveau 2)"),
+
+    ALERTE_6_1(6, 7, "#d9ff00", "Forage commencée → Demande terminée (niveau 1)"),
+    ALERTE_6_2(6, 7, "#dc0e0e", "Forage commencée → Demande terminée (niveau 2)");
 
     private final Integer idStatus1;
     private final Integer idStatus2;
@@ -53,4 +61,28 @@ public enum AlerteColor {
         }
         return null;
     }
+
+    public static AlerteColor findByTransitionAndNiveau(Integer id1, Integer id2, Integer niveau) {
+        if (id1 == null || id2 == null || niveau == null)
+            return null;
+        for (AlerteColor a : values()) {
+            if (a.idStatus1.equals(id1) && a.idStatus2.equals(id2)) {
+                // niveau 1 → nom contient "niveau 1", niveau 2 → "niveau 2"
+                if (a.description.contains("niveau " + niveau)) {
+                    return a;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static AlerteColor findByTransition(Integer id1, Integer id2) {
+        for (AlerteColor a : values()) {
+            if (a.idStatus1.equals(id1) && a.idStatus2.equals(id2)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
 }

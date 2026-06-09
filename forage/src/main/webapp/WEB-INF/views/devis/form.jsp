@@ -130,7 +130,7 @@
 </head>
 <body>
     <nav class="navbar">
-        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage</a>
+        <a href="${pageContext.request.contextPath}/" class="brand">GestionForage - ETU004185</a>
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/demandes">Demandes</a></li>
             <li><a href="${pageContext.request.contextPath}/devis" class="active">Devis</a></li>
@@ -141,7 +141,6 @@
     <div class="container">
         <h1>Nouveau Devis</h1>
 
-        <!-- ===== SECTION 1 : Infos générales ===== -->
         <div class="card">
             <h2>Informations générales</h2>
 
@@ -193,7 +192,6 @@
             </div>
         </div>
 
-        <!-- ===== SECTION 2 : Lignes de détail ===== -->
         <div class="card">
             <h2>Lignes de détail</h2>
 

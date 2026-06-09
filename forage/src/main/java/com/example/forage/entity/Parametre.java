@@ -2,8 +2,9 @@ package com.example.forage.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,26 +12,31 @@ import jakarta.persistence.Table;
 public class Parametre {
 
     @Id
-    @Column(name = "id_status1")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "id_status1", nullable = false)
     private Integer idStatus1;
 
-    @Column(name = "id_status2")
+    @Column(name = "id_status2", nullable = false)
     private Integer idStatus2;
 
-    @Column(name = "duree_minute", nullable = false)
-    private Double dureeMinute;
+    @Column(name = "debut_minute", nullable = false)
+    private Double debutMinute;
+
+    @Column(name = "fin_minute", nullable = false)
+    private Double finMinute;
 
     @Column(name = "alerte")
     private Integer alerte;
 
-    public Parametre() {
+    public Integer getId() {
+        return id;
     }
 
-    public Parametre(Integer idStatus1, Integer idStatus2, Double dureeMinute, Integer alerte) {
-        this.idStatus1 = idStatus1;
-        this.idStatus2 = idStatus2;
-        this.dureeMinute = dureeMinute;
-        this.alerte = alerte;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getIdStatus1() {
@@ -49,12 +55,20 @@ public class Parametre {
         this.idStatus2 = idStatus2;
     }
 
-    public Double getDureeMinute() {
-        return dureeMinute;
+    public Double getDebutMinute() {
+        return debutMinute;
     }
 
-    public void setDureeMinute(Double dureeMinute) {
-        this.dureeMinute = dureeMinute;
+    public void setDebutMinute(Double debutMinute) {
+        this.debutMinute = debutMinute;
+    }
+
+    public Double getFinMinute() {
+        return finMinute;
+    }
+
+    public void setFinMinute(Double finMinute) {
+        this.finMinute = finMinute;
     }
 
     public Integer getAlerte() {
@@ -65,9 +79,5 @@ public class Parametre {
         this.alerte = alerte;
     }
 
-    @Override
-    public String toString() {
-        return "Parametre [idStatus1=" + idStatus1 + ", idStatus2=" + idStatus2 + ", dureeMinute=" + dureeMinute
-                + ", alerte=" + alerte + "]";
-    }
+    // constructeurs, getters, setters...
 }

@@ -53,20 +53,12 @@ public class StatusDemandeController {
         List<Demande> demandes = demandeRepository.findAll();
         Map<Integer, List<StatusDemandeWithAlerteDTO>> statusParDemande = new HashMap<>();
 
-        // System.out.println("=== DEBUG LIST CONTROLLER ===");
-        // System.out.println("Nombre de demandes: " + demandes.size());
 
         // Pour chaque demande, récupérer les statuts avec les alertes
         for (Demande demande : demandes) {
             try {
-                // System.out.println("Traitement demande ID: " + demande.getId() + " - " + demande.getReference());
                 List<StatusDemandeWithAlerteDTO> statusesWithAlertes = alerteService.getStatusDemandeWithAlertes(demande);
-                // System.out.println("  → Nombre de statuts retournés: " + statusesWithAlertes.size());
                 
-                // for (int i = 0; i < statusesWithAlertes.size(); i++) {
-                //     // System.out.println("    Statut " + (i+1) + ": " + statusesWithAlertes.get(i).getStatusLibele() + 
-                //                     // " | Alertes: " + statusesWithAlertes.get(i).getAlertes().size());
-                // }
                 
                 if (!statusesWithAlertes.isEmpty()) {
                     statusParDemande.put(demande.getId(), statusesWithAlertes);
@@ -117,10 +109,10 @@ public class StatusDemandeController {
         
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(ts.getTime());
-        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-            throw new IllegalArgumentException("La date doit être un jour ouvrable (lundi à vendredi).");
-        }
+        int jw = cal.get(Calendar.DAY_OF_WEEK);
+        // if (jw == Calendar.SATURDAY || jw == Calendar.SUNDAY) {
+        //     throw new IllegalArgumentException("La date doit être un jour ouvrable (lundi à vendredi).");
+        // }
 
         int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);

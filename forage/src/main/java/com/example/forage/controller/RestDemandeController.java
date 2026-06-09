@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.example.forage.dto.AlerteDTO;
 import com.example.forage.dto.StatusDemandeWithAlerteDTO;
 import com.example.forage.entity.Demande;
 import com.example.forage.repository.DemandeRepository;
@@ -25,71 +22,115 @@ public class RestDemandeController {
     private final DemandeRepository demandeRepository;
     private final AlerteService alerteService;
 
-    public RestDemandeController(DemandeRepository demandeRepository, AlerteService alerteService) {
+    public RestDemandeController(DemandeRepository demandeRepository,
+            AlerteService alerteService) {
         this.demandeRepository = demandeRepository;
         this.alerteService = alerteService;
     }
 
-    /**
-     * Liste les demandes avec leurs statuts (chronologique).
-     * Filtrage par `status` (id ou libellé) et `alerte` (true/false).
-     */
     @GetMapping("/demandes")
-        public ResponseEntity<?> list(
+    public ResponseEntity<?> list(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String alerte,
             @RequestParam(required = false) String color,
-            @RequestParam(required = false, defaultValue = "asc") String sort
-        ) {
-        Sort.Direction dir = "desc".equalsIgnoreCase(sort) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            @RequestParam(required = false) String reference,
+            @RequestParam(required = false, defaultValue = "asc") String sort) {
+
+        Sort.Direction dir = "desc".equalsIgnoreCase(sort)
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
         List<Demande> demandes = demandeRepository.findAll(Sort.by(dir, "dateDemande"));
 
         List<Map<String, Object>> out = new ArrayList<>();
 
         for (Demande d : demandes) {
-            List<StatusDemandeWithAlerteDTO> statuses = alerteService.getStatusDemandeWithAlertes(d);
-            boolean hasAlerte = statuses.stream()
-                    .flatMap(s -> s.getAlertes() != null ? s.getAlertes().stream() : List.<Object>of().stream())
-                    .anyMatch(a -> {
-                        try {
-                            return ((com.example.forage.dto.AlerteDTO) a).getIsAlerte();
-                        } catch (Exception e) {
-                            return false;
-                        }
-                    });
 
-            // if color filter provided, check if any alert matches the color
+            List<StatusDemandeWithAlerteDTO> statuses = alerteService.getStatusDemandeWithAlertes(d);
+
+            // HAS ALERTE GLOBAL
+            boolean hasAlerte = statuses.stream()
+                    .filter(s -> s.getAlertes() != null)
+                    .flatMap(s -> s.getAlertes().stream())
+                    .anyMatch(a -> Boolean.TRUE.equals(a.getIsAlerte()));
+
+            // FILTRE REFERENCE DEMANDE
+            if (reference != null && !reference.isBlank()) {
+                String refInput = reference.trim().toLowerCase();
+
+                if (d.getReference() == null ||
+                        !d.getReference().toLowerCase().contains(refInput)) {
+                    continue;
+                }
+            }
+
+            // FILTRE STATUS (HISTORIQUE)
+            if (status != null && !status.isBlank()) {
+
+                String input = status.trim().toLowerCase();
+
+                boolean matched;
+
+                try {
+                    Integer wantedId = Integer.parseInt(input);
+
+                    matched = statuses.stream()
+                            .anyMatch(s -> s.getStatusId() != null &&
+                                    s.getStatusId().equals(wantedId));
+
+                } catch (Exception e) {
+
+                    matched = statuses.stream()
+                            .anyMatch(s -> s.getStatusLibele() != null &&
+                                    s.getStatusLibele()
+                                            .trim()
+                                            .toLowerCase()
+                                            .equals(input));
+                }
+
+                if (!matched)
+                    continue;
+            }
+
+            // FILTRE ALERTE ACTIVE (FIX)
+            if (alerte != null && !alerte.isBlank()) {
+
+                boolean wantAlerte;
+
+                if (alerte.equalsIgnoreCase("true")) {
+                    wantAlerte = true;
+                } else if (alerte.equalsIgnoreCase("false")) {
+                    wantAlerte = false;
+                } else {
+                    continue; // valeur invalide
+                }
+
+                if (hasAlerte != wantAlerte) {
+                    continue;
+                }
+            }
+
+            // FILTRE COULEUR ALERTE
             if (color != null && !color.isBlank()) {
-                String want = color.trim().toLowerCase();
-                if (want.startsWith("#")) want = want.substring(1);
+
+                String wantedColor = color
+                        .replace("#", "")
+                        .trim()
+                        .toLowerCase();
+
                 boolean matchedColor = statuses.stream()
-                        .flatMap(s -> s.getAlertes() != null ? s.getAlertes().stream() : List.<com.example.forage.dto.AlerteDTO>of().stream())
-                        .map(a -> ((com.example.forage.dto.AlerteDTO) a).getCouleur())
+                        .filter(s -> s.getAlertes() != null)
+                        .flatMap(s -> s.getAlertes().stream())
+                        .map(AlerteDTO::getCouleur)
                         .filter(c -> c != null)
                         .map(c -> c.replace("#", "").toLowerCase())
-                        .anyMatch(c -> c.equals(want));
-                if (!matchedColor) continue;
+                        .anyMatch(c -> c.equals(wantedColor));
+
+                if (!matchedColor)
+                    continue;
             }
 
-            // appliquer filtre status si fourni (compare id ou libellé)
-            if (status != null && !status.isBlank()) {
-                boolean matched = false;
-                try {
-                    Integer id = Integer.valueOf(status);
-                    if (d.getStatus() != null && d.getStatus().getId().equals(id)) matched = true;
-                } catch (Exception e) {
-                    // non integer → comparer libellé
-                    if (d.getStatus() != null && d.getStatus().getLibele() != null
-                            && d.getStatus().getLibele().equalsIgnoreCase(status)) matched = true;
-                }
-                if (!matched) continue;
-            }
-
-            if (alerte != null && !alerte.isBlank()) {
-                boolean want = Boolean.parseBoolean(alerte);
-                if (want != hasAlerte) continue;
-            }
-
+            // RESPONSE
             Map<String, Object> m = new HashMap<>();
             m.put("id", d.getId());
             m.put("reference", d.getReference());
@@ -99,9 +140,10 @@ public class RestDemandeController {
             m.put("currentStatus", d.getStatus() != null ? d.getStatus().getLibele() : null);
             m.put("hasAlerte", hasAlerte);
             m.put("statuses", statuses);
+
             out.add(m);
         }
 
-        return ResponseEntity.ok(out.stream().collect(Collectors.toList()));
+        return ResponseEntity.ok(out);
     }
 }

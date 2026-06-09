@@ -10,12 +10,21 @@ public class StatusDemandeWithAlerteDTO {
     private String observation;
     private Double dureeTravail;
     private List<AlerteDTO> alertes;
+    private Integer statusId;
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
 
     public StatusDemandeWithAlerteDTO() {
     }
 
     public StatusDemandeWithAlerteDTO(Integer id, String statusLibele, Timestamp dateStatus,
-                                      String observation, Double dureeTravail) {
+            String observation, Double dureeTravail) {
         this.id = id;
         this.statusLibele = statusLibele;
         this.dateStatus = dateStatus;
